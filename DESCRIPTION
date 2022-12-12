@@ -21,6 +21,8 @@ Depends:
     R (>= 3.6)
 License: GPL-3
 Encoding: UTF-8
+URL: https://github.com/Ronlee12355/GCclassifier
+BugReports: https://github.com/Ronlee12355/GCclassifier/issues
 LazyData: true
 RoxygenNote: 7.1.2
 Suggests: 
