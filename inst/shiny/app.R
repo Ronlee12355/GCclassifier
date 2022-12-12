@@ -38,10 +38,6 @@ ui <- navbarPage(
               choices = c("SYMBOL", "ENSEMBL", "ENTREZID", "REFSEQ"),
               selected = "SYMBOL"
             ),
-            checkboxInput(
-              'toLog2', label = 'Perform log2 transformation: ',
-              value = F
-            ),
             br(),
             HTML('Example input dataset could download <a href="GCclassifier_example.csv", target="_blank" download="GCclassifier_example.csv">HERE</a>'),
             br(),
@@ -119,7 +115,7 @@ server <- function(input, output, session){
     tryCatch({
         res <- GCclassifier::get_molecular_subtype(
           Expr = data.set, method = input$method ,idType = input$idType,
-          toLog2 = input$toLog2, maxp = NULL, verbose = F)
+          maxp = NULL, verbose = F)
       },
       error = function(e){
         removeModal()

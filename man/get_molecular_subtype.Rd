@@ -8,22 +8,18 @@ get_molecular_subtype(
   Expr,
   method = c("ACRG", "EMP"),
   idType = c("SYMBOL", "ENSEMBL", "ENTREZID", "REFSEQ"),
-  toLog2 = FALSE,
   maxp = NULL,
   verbose = TRUE
 )
 }
 \arguments{
-\item{Expr}{a dataframe with log2 scaled gene expression profile data,
+\item{Expr}{a dataframe or matrix with log2 scaled gene expression profile data,
 with samples in column and genes in rows, gene names should not be empty.}
 
 \item{method}{subtyping classification model, should be either "ACRG" or "EMP".}
 
 \item{idType}{a string which indicates which type of gene ids used in the rownames of GEP,
-should be one of "SYMBOL","ENSEMBL","ENTREZID" and "REFSEQ". The default is "SYMBOL".}
-
-\item{toLog2}{a logical, whether the function should perform the log2 transformation,
-the default is FALSE, meaning that the input GEP has already been log2 scaled.}
+should be one of "SYMBOL","ENSEMBL","ENTREZID" and "REFSEQ".}
 
 \item{maxp}{the maxp parameter used in \code{\link[impute]{impute.knn}} function,
 it is optional.}
@@ -32,7 +28,7 @@ it is optional.}
 or not (when verbose=FALSE).}
 }
 \value{
-a dataframe with sample names and predicted molecular subtype labels.
+a dataframe with sample names and predicted molecular subtype labels (with subtype probabilities if method = "EMP").
 }
 \description{
 Predict the molecular subtype of gastric cancer samples,

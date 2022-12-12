@@ -37,6 +37,8 @@ Gastric cancer (GC) can be divided into gene expression-based and biologically d
     idType = 'SYMBOL' ## the gene identifier type in gene expression profile
   )
 ```
+**Design**   
+Package builds on standard R package and was developed in RStudio following guidelines in R packages [http://r-pkgs.had.co.nz/].
 
 **References**      
 Oh, S.C., Sohn, B.H., Cheong, JH. et al. Clinical and genomic landscape of gastric cancer with a mesenchymal phenotype. Nat Commun 9, 1777 (2018).   
