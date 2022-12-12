@@ -15,7 +15,7 @@ Gastric cancer (GC) can be divided into gene expression-based and biologically d
   ## Users need to install these packages before using GCclassifier
   BiocManager::install(c(
     'impute', 'dplyr', 'magrittr', 'AnnotationDbi', 'randomForest', 'org.Hs.eg.db', 'shiny', 'DT', 'shinyjs'
-  ))
+  ), force = T)
   ### install: latest version
   devtools::install_github("Ronlee12355/GCclassifier", build_vignettes = TRUE)
 ```
