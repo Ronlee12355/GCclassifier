@@ -47,7 +47,7 @@ get_molecular_subtype <- function(Expr, method = c("ACRG", "EMP"),
   if(is.null(rownames(Expr)) | is.null(colnames(Expr))){
     stop('Rownames and colnames are madatory in gene expression profile.')
   }
-  if(sum(sapply(Expr, is.numeric)) != ncol(Expr)){
+  if(sum(apply(Expr, 2, is.numeric)) != ncol(Expr)){
     stop('Only numeric values in gene expression profile is accepted.')
   }
   if(any(Expr < 0, na.rm = T)){
