@@ -5,10 +5,10 @@
 #'
 #' @examples
 #' get_molecular_subtype_interface()
-get_molecular_subtype_interface <- function(){
+get_molecular_subtype_interface <- function() {
   appDir <- system.file('shiny', package = 'GCclassifier')
 
-  if(appDir == ''){
+  if (appDir == '') {
     stop('Could not load shiny directory. Try re-install `GCclassifier`')
   }
 

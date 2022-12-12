@@ -2,7 +2,7 @@
 #' @description This function could help to convert the gene expression from probe level to
 #' symbol (SYMBOL, ENSEMBL, ENTREZID) level.
 #'
-#' @param Expr a dataframe with log2 scaled gene expression profile, samples in columns,
+#' @param Expr a dataframe or matrix with log2 scaled gene expression profile, samples in columns,
 #' probes in rows, rownames corresponding to the probe in annotation file.
 #' @param annotation probe annotation file, must have "probe" and "symbol" in colnames,
 #' "probe" corresponding to rownames in Expr and "sample" corresponding to the specified gene identifier.
@@ -23,13 +23,13 @@
 #' }
 
 probe_to_symbol <- function(Expr, annotation, aggregateMethod = c('mean', 'median', 'max')){
-  if(!is.data.frame(Expr)){
-    stop('Only gene expression profile in dataframe format is accepted.')
+  if(!is.data.frame(Expr) & !is.matrix(Expr)){
+    stop('Only gene expression profile in dataframe or matrix format is accepted.')
   }
   if(is.null(rownames(Expr)) | is.null(colnames(Expr))){
     stop('Rownames and colnames are madatory in gene expression profile.')
   }
-  if(sum(sapply(Expr, is.numeric)) != ncol(Expr)){
+  if(sum(apply(Expr, 2, is.numeric)) != ncol(Expr)){
     stop('Only numeric values in gene expression profile is accepted.')
   }
   if(any(Expr < 0, na.rm = T)){
