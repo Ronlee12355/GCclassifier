@@ -1,6 +1,6 @@
 # GCclassifier: an R package for prediction of gene expression-based molecular subtype of gastric cancer
 
-Gastric cancer (GC) can be divided into gene expression-based and biologically distinct molecular subtypes. This package is to built to label gastric cancer samples based on their log2 scaled gene expression profiles (GEP).
+Gastric cancer (GC) can be divided into gene expression-based and biologically distinct molecular subtypes. This package is to built to label gastric cancer samples based on their log2 scaled gene expression profiles (GEP). More information about the usage of `Gcclassifier` could be found here by running `browseVignettes('GCclassifier')`.
 
 **Install package**
 ```{r}
@@ -38,7 +38,7 @@ Gastric cancer (GC) can be divided into gene expression-based and biologically d
   )
 ```
 **Design**   
-Package builds on standard R package and was developed in RStudio following guidelines in R packages [http://r-pkgs.had.co.nz/].
+Package builds on standard R package workflow and was developed in RStudio following guidelines in R packages [http://r-pkgs.had.co.nz/].
 
 **References**      
 Oh, S.C., Sohn, B.H., Cheong, JH. et al. Clinical and genomic landscape of gastric cancer with a mesenchymal phenotype. Nat Commun 9, 1777 (2018).   
