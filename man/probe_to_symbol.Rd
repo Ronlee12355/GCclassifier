@@ -7,7 +7,7 @@
 probe_to_symbol(Expr, annotation, aggregateMethod = c("mean", "median", "max"))
 }
 \arguments{
-\item{Expr}{a dataframe with log2 scaled gene expression profile, samples in columns,
+\item{Expr}{a dataframe or matrix with log2 scaled gene expression profile, samples in columns,
 probes in rows, rownames corresponding to the probe in annotation file.}
 
 \item{annotation}{probe annotation file, must have "probe" and "symbol" in colnames,
