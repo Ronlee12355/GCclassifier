@@ -9,6 +9,7 @@ Description: Gastric cancer (GC) can be divided into gene expression-based and b
 Imports: 
     impute,
     dplyr,
+    BiocStyle,
     magrittr,
     AnnotationDbi,
     randomForest,
