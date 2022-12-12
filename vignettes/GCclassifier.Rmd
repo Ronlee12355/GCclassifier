@@ -3,6 +3,7 @@ title: "GCclassifier: an R package for prediction of gene expression-based molec
 output: 
   BiocStyle::html_document:
     toc: FALSE
+bibliography: bibliography.bib
 vignette: >
   %\VignetteEncoding{UTF-8}
   %\VignetteIndexEntry{GCclassifier: an R package for prediction of gene expression-based molecular subtype of gastric cancer}
@@ -43,7 +44,7 @@ The `GCclassifier` package provides molecular subtype classification of gastric 
 -   Microarray data input should be pre-processed and normalized (log2 transformed).\
 -   RNA-sequencing data input should be log2 transformed normalized values (TPM recommended).
 
-If the input dataset is not log2 transformed, users could set `toLog2 = TRUE`, then the function will perform the log2 transformation automatically.
+If the input dataset is not log2 transformed, the function will detect the gene expression profile range and perform the log2 transformation automatically if needed.
 
 # Quick start
 
@@ -75,7 +76,7 @@ BiocManager::install(c(
 
 ## Load example dataset GSE62254
 
-In this case study, we would use `GCclassifier` package to perform gastric cancer molecular subtype prediction on a common gene expression profile. Basically, this dataset (ACRG cohort) is from microarray profiles from 300 gastric tumors from gastric cancer patients named [GSE62254](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE62254). Using this gene expression profile, we will predict its molecular subtype utilizing both two subtype systems (`EMP` and `ACRG`).
+In this case study, we would use `GCclassifier` package to perform gastric cancer molecular subtype prediction on a common gene expression profile. Basically, this dataset (ACRG cohort) is from microarray profiles from 300 gastric tumors from gastric cancer patients named [GSE62254](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE62254) (@Cristescu2015). Using this gene expression profile, we will predict its molecular subtype utilizing both two subtype systems (`EMP` (@Oh2018) and `ACRG`(@Cristescu2015)).
 
 ```{r, eval=TRUE}
   ## Load example data set from GCclassifier and have a glimpse
@@ -208,3 +209,5 @@ To facilitate non-R users and simplify programming burdens, a shiny application 
 ```{r, echo=FALSE}
   sessionInfo()
 ```
+
+# References
