@@ -33,7 +33,7 @@ Gastric cancer (GC) can be divided into gene expression-based and biologically d
   )
 ```
 
-**References**
+**References**      
 Oh, S.C., Sohn, B.H., Cheong, JH. et al. Clinical and genomic landscape of gastric cancer with a mesenchymal phenotype. Nat Commun 9, 1777 (2018).   
 https://doi.org/10.1038/s41467-018-04179-8.      
 
