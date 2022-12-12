@@ -60,7 +60,7 @@ get_molecular_subtype <- function(Expr, method = c("ACRG", "EMP"),
     stop('Sample names in expression profile should not contain "SYMBOL", "ENSEMBL", "ENTREZID" and "REFSEQ".')
   }
   if(is.matrix(Expr)){
-    warning('Transforming the input gene expression profile into dataframe format.')
+    message('Transforming the input gene expression profile into dataframe format.')
     Expr <- as.data.frame(Expr)
   }
   Expr<-Expr[apply(Expr, 1, function(x){mad(x) > 0}),]
