@@ -18,7 +18,7 @@ Imports:
     DT,
     shinyjs
 Depends: 
-    R (>= 3.6)
+    R (>= 4.1.0)
 License: GPL-3
 Encoding: UTF-8
 URL: https://github.com/Ronlee12355/GCclassifier
