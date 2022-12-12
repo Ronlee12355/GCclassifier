@@ -1,6 +1,6 @@
 # GCclassifier: an R package for prediction of gene expression-based molecular subtype of gastric cancer
 
-Gastric cancer (GC) can be divided into gene expression-based and biologically distinct molecular subtypes. This package is to built to label gastric cancer samples based on their log2 scaled gene expression profiles (GEP). More information about the usage of `Gcclassifier` could be found here by running `browseVignettes('GCclassifier')`.
+Gastric cancer (GC) can be divided into gene expression-based and biologically distinct molecular subtypes. This package is to built to label gastric cancer samples based on their log2 scaled gene expression profiles (GEP). More information about the usage of `GCclassifier` could be found here by running `browseVignettes('GCclassifier')`.
 
 **Install package**
 ```{r}
@@ -38,11 +38,14 @@ Gastric cancer (GC) can be divided into gene expression-based and biologically d
   )
 ```
 **Design**   
-Package builds on standard R package workflow and was developed in RStudio following guidelines in R packages [http://r-pkgs.had.co.nz/].
+`GCclassifier` package builds on standard R package workflow and was developed in RStudio following guidelines in R packages [http://r-pkgs.had.co.nz/].
 
 **References**      
-Oh, S.C., Sohn, B.H., Cheong, JH. et al. Clinical and genomic landscape of gastric cancer with a mesenchymal phenotype. Nat Commun 9, 1777 (2018).   
-https://doi.org/10.1038/s41467-018-04179-8.      
+Oh, S.C., Sohn, B.H., Cheong, JH. et al. Clinical and genomic landscape of gastric cancer with a mesenchymal phenotype. Nat Commun 9, 1777 (2018). https://doi.org/10.1038/s41467-018-04179-8             
 
-Cristescu, R., Lee, J., Nebozhyn, M. et al. Molecular analysis of gastric cancer identifies subtypes associated with distinct clinical outcomes. Nat Med 21, 449–456 (2015).      
-https://doi.org/10.1038/nm.3850.
+Cristescu, R., Lee, J., Nebozhyn, M. et al. Molecular analysis of gastric cancer identifies subtypes associated with distinct clinical outcomes. Nat Med 21, 449–456 (2015). https://doi.org/10.1038/nm.3850       
+
+R Core Team. R: A Language and Environment for Statistical Computing [Internet]. Vienna, Austria: R Foundation for Statistical Computing; 2013. http://www.R-project.org/
+
+Wickham, H. R Packages: Organize, Test, Document, and Share Your Code. 1st ed. O’Reilly Media. 2015.    
+
