@@ -2,7 +2,7 @@
 
 Gastric cancer (GC) can be divided into gene expression-based and biologically distinct molecular subtypes. This package is to built to label gastric cancer samples based on their log2 scaled gene expression profiles (GEP).
 
-** Install package **
+**Install package**
 ```{r}
   # Required packages: run if not already installed
   if(!requireNamespace('BiocManager')){
