@@ -1,0 +1,210 @@
+---
+title: "GCclassifier: an R package for prediction of gene expression-based molecular subtype of gastric cancer"
+output: 
+  BiocStyle::html_document:
+    toc: FALSE
+vignette: >
+  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{GCclassifier: an R package for prediction of gene expression-based molecular subtype of gastric cancer}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  fig.height = 9,
+  fig.align = 'center',
+  collapse = TRUE,
+  message = TRUE,
+  echo = TRUE,
+  warnings = FALSE
+)
+```
+
+Jiang Li^1,2^, Xin Wang^1,2,3^
+
+^1^ Department of Surgery, The Chinese University of Hong Kong, Hong Kong SAR, China.\
+^2^ Department of Biomedical Sciences, City University of Hong Kong, Hong Kong SAR, China.\
+^3^ Shenzhen Research Institute, City University of Hong Kong, China.
+
+-   Contact: [xwang\@surgery.cuhk.edu.hk](mailto:xwang@surgery.cuhk.edu.hk){.email}
+-   `r paste("Date:", Sys.Date())`
+-   package: `r BiocStyle::pkg_ver("GCclassifier")`
+
+# Introduction
+
+The `GCclassifier` package provides molecular subtype classification of gastric cancer models using log2 scaled gene expression profile. The core classification algorithm is [random forest](https://www.stat.berkeley.edu/~breiman/RandomForests/). Moreover, besides R functions, it also provides shiny application which facilitates the non-R users to make gastric cancer molecular subtype prediction.
+
+# Input data
+
+`GCclassifier` provides robust *cross platform and sample-type* performance on microarray & RNA-seq datasets, and also requires an expression matrix. Gene names in input data must be [NCBI Entrez](https://www.ncbi.nlm.nih.gov/gene), [Ensembl](http://www.ensembl.org/index.html), [HGNC symbol](http://www.genenames.org/) or [Refseq](https://www.ncbi.nlm.nih.gov/refseq/) identifiers. For gene symbols or Ensembl identifiers, parameter `rownames` must be set to `symbol` or `ensg`, respectively, and `colnames` should be set to sample names. For specifically:
+
+-   Microarray data input should be pre-processed and normalized (log2 transformed).\
+-   RNA-sequencing data input should be log2 transformed normalized values (TPM recommended).
+
+If the input dataset is not log2 transformed, users could set `toLog2 = TRUE`, then the function will perform the log2 transformation automatically.
+
+# Quick start
+
+## Pre-requisite of installation
+
+Before running the example codes in the vignette, the following R packages are required:
+
+-   dplyr (dataframe manipulation)
+-   magrittr (pipe operator)
+-   randomForest (prediction model)
+-   BiocManager (package installation)
+-   shiny (shiny webpage)
+-   DT (shiny webpage)
+-   shinyjs (shiny webpage)
+-   impute (missing data imputation)
+-   AnnotationDbi (gene identifier converter)
+-   org.Hs.eg.db (gene identifier converter)
+
+```{r, eval=FALSE}
+# Required packages: run if not already installed
+if(!requireNamespace('BiocManager')){
+  install.packages('BiocManager')
+}
+
+BiocManager::install(c(
+  'impute', 'dplyr', 'magrittr', 'AnnotationDbi', 'randomForest', 'org.Hs.eg.db', 'shiny', 'DT', 'shinyjs'
+))
+```
+
+## Load example dataset GSE62254
+
+In this case study, we would use `GCclassifier` package to perform gastric cancer molecular subtype prediction on a common gene expression profile. Basically, this dataset (ACRG cohort) is from microarray profiles from 300 gastric tumors from gastric cancer patients named [GSE62254](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE62254). Using this gene expression profile, we will predict its molecular subtype utilizing both two subtype systems (`EMP` and `ACRG`).
+
+```{r, eval=TRUE}
+  ## Load example data set from GCclassifier and have a glimpse
+  library(GCclassifier)
+  data("GSE62254")
+  data("GSE62254_subtype")
+  GSE62254[1:5, 1:5]
+  
+  ## Check whether sample names in expression profile is identical to the sample names in clinical information
+  identical(colnames(GSE62254), GSE62254_subtype$GEO_ID)
+```
+
+The gene expression dataset was mapped from probes to gene symbols, and if multiple probes mapped to the same gene, the probe with the maximum expression value would be kept. In GSE62254, the `rownames(GSE62254)` were gene symbols and the `colnames(GSE62254)` were the sample names.
+
+## The EMP subtype prediction
+
+To predict the EMP subtypes, the GSE62254 would be the input data of gene expression and more information of other parameters would be found in the help page of `get_molecular_subtype`:
+
+```{r, eval=TRUE, message=TRUE}
+  emp.res <- get_molecular_subtype(
+    Expr = GSE62254, ## gene expression profile with log2 transformation
+    method = 'EMP', ## subtyping system
+    idType = 'SYMBOL' ## the gene identifier type in gene expression profile
+  )
+  
+  table(emp.res$subtype, GSE62254_subtype$Subgroup)
+```
+
+After predicting the EMP subtypes of GSE62254, the survival outcomes of the predicted labels would be used to check the subtype clinical revelence. To this end, two packages named `survival` and `survminer` should be installed first:
+
+```{r, eval=TRUE}
+  if(!requireNamespace('survival')){
+    BiocManager::install('survival')
+  }
+
+  if(!requireNamespace('survminer')){
+    BiocManager::install('survminer')
+  }
+
+  library(survival)
+  library(survminer)
+  GSE62254_subtype[['EMP']] <- emp.res$subtype
+  ggsurvplot(
+    survfit(Surv(OS.m, Death) ~ EMP, data = GSE62254_subtype),
+    pval = TRUE,
+    conf.int = F,
+    risk.table = T,
+    risk.table.col = "strata",
+    size = 1.5 ,
+    pval.size = 8,
+    xlab = 'Follow up (months)',
+    ylab = 'Overall survival (%)',
+    legend.title = '',
+    legend.lab = c('EP', 'MP'),
+    ggtheme = theme_classic2(),
+    palette = "Dark1"
+  ) + ggtitle('GSE62254 - OS')
+  
+  ggsurvplot(
+    survfit(Surv(DFS.m, Recur) ~ EMP, data = GSE62254_subtype),
+    pval = TRUE,
+    conf.int = F,
+    risk.table = T,
+    risk.table.col = "strata",
+    size = 1.5,
+    pval.size = 8,
+    xlab = 'Follow up (months)',
+    ylab = 'Disease-free survival (%)',
+    legend.title = '',
+    legend.lab = c('EP', 'MP'),
+    ggtheme = theme_classic2(),
+    palette = "Dark1"
+  ) + ggtitle('GSE62254 - DFS')
+```
+
+## The ACRG subtype prediction
+
+To predict the ACRG subtypes, except changing the `method` parameter from `EMP` to `ACRG`, the rest is the same:
+
+```{r, eval=TRUE, message=TRUE}
+  acrg.res <- get_molecular_subtype(
+    Expr = GSE62254, ## gene expression profile with log2 transformation
+    method = 'ACRG', ## subtyping system
+    idType = 'SYMBOL' ## the gene identifier type in gene expression profile
+  )
+  table(acrg.res$subtype, GSE62254_subtype$ACRG.sub)
+```
+
+```{r, eval=TRUE}
+GSE62254_subtype$ACRG <- acrg.res$subtype
+survfit(Surv(OS.m, Death) ~ ACRG, data = GSE62254_subtype) %>%
+  ggsurvplot(
+    pval = TRUE,
+    conf.int = F,
+    risk.table = T,
+    risk.table.col = "strata",
+    size = 1.5 ,
+    pval.size = 8,
+    xlab = 'Follow up (months)',
+    ylab = 'Overall survival (%)',
+    legend.title = '',
+    legend.lab = c('MSI', 'MSS/EMT', 'MSS/TP53-', 'MSS/TP53+'),
+    ggtheme = theme_classic2(),
+    palette = "Dark1"
+  ) + ggtitle('GSE62254')
+
+survfit(Surv(DFS.m, Recur) ~ ACRG, data = GSE62254_subtype) %>%
+  ggsurvplot(
+    pval = TRUE,
+    conf.int = F,
+    risk.table = T,
+    risk.table.col = "strata",
+    size = 1.5,
+    pval.size = 8,
+    xlab = 'Follow up (months)',
+    ylab = 'Disease-free survival (%)',
+    legend.title = '',
+    legend.lab = c('MSI', 'MSS/EMT', 'MSS/TP53-', 'MSS/TP53+'),
+    ggtheme = theme_classic2(),
+    palette = "Dark1"
+  ) + ggtitle('GSE62254')
+```
+
+# Shiny application
+To facilitate non-R users and simplify programming burdens, a shiny application of molecular subtype prediction was provided simply by running function `get_molecular_subtype_interface()` and the shiny app will automatically appear on browser (Chrome, Firefox, Edge and Safari recommended). Example dataset would be found on the `Analyze` page and predicted results could be downloaded directly. For more information, please run `??get_molecular_subtype_interface`.
+
+
+# Session Info
+
+```{r, echo=FALSE}
+  sessionInfo()
+```

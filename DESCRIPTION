@@ -1,0 +1,31 @@
+Package: GCclassifier
+Type: Package
+Title: GCclassifier: an R package for prediction of gene expression-based molecular subtype of gastric cancer
+Version: 0.1.0
+Date: 2022-11-21 
+Author@R: person("Jiang", "Li", email="jli.ww@my.cityu.edu.hk", 
+                                role=c("aut", "cre"))
+Description: Gastric cancer (GC) can be divided into gene expression-based and biologically distinct molecular subtypes. This package is to built to label gastric cancer samples based on their log2 scaled gene expression profiles (GEP).
+Imports: 
+    impute,
+    dplyr,
+    magrittr,
+    AnnotationDbi,
+    randomForest,
+    org.Hs.eg.db,
+    BiocManager,
+    shiny,
+    DT,
+    shinyjs
+Depends: 
+    R (>= 3.6)
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.2
+Suggests: 
+    rmarkdown,
+    knitr,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+VignetteBuilder: knitr
