@@ -15,7 +15,7 @@
 #' @return a dataframe with sample names and predicted molecular subtype labels (with subtype probabilities if method = "EMP").
 #' @importFrom impute impute.knn
 #' @importFrom stats predict
-#' @importFrom dplyr filter group_by summarize_all case_when mutate left_join
+#' @importFrom dplyr filter group_by summarize_all case_when mutate left_join pull
 #' @importFrom magrittr %>%
 #' @importFrom AnnotationDbi mapIds
 #' @import randomForest
@@ -191,9 +191,8 @@ get_molecular_subtype <- function(Expr,
     tmp <-
       res[res$MSI.EMT %in% c('MSS/TP53+', 'MSS/TP53-'), 'sample', drop = F]
 
-    tmp$TP53.score <- predict(gc.acrg.emt$TP53,
-                              Expr_impute[, tmp$sample] %>% t() %>% scale() %>% as.data.frame(),
-                              type = 'prob')[, 2]
+    tmp$TP53.score <- Expr_impute[rownames(gc.acrg.emt$TP53$importance), tmp$sample] %>% t() %>%
+      scale() %>% as.data.frame() %>% dplyr::mutate(score=(MDM2+CDKN1A)/2) %>% dplyr::pull(score)
 
     tmp$TP53 <- ifelse(tmp$TP53.score >= gc.acrg.emt$ACRG.youden.index ,
                        'MSS/TP53+',
