@@ -15,7 +15,7 @@ ui <- navbarPage(
   ),
   tabPanel(
     'Analyze',
-    icon = icon('newspaper-o'),
+    icon = icon('wrench'),
     fluidPage(
       h1('Upload gastric cancer gene expression profile to predict molecular subtype',style='font-weight:bold;'),
       br(),
