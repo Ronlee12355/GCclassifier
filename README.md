@@ -32,9 +32,9 @@ Gastric cancer (GC) can be divided into gene expression-based and biologically d
   )
 
   acrg.res <- get_molecular_subtype(
-    Expr = GSE62254, ## gene expression profile with log2 transformation
-    method = 'ACRG', ## subtyping system
-    idType = 'SYMBOL' ## the gene identifier type in gene expression profile
+    Expr = GSE62254, 
+    method = 'ACRG', 
+    idType = 'SYMBOL' 
   )
   
   tcga.res <- get_molecular_subtype(

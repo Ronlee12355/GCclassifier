@@ -205,8 +205,8 @@ get_molecular_subtype <- function(Expr,
   if (isTRUE(verbose)) {
     message('Making molecular subtype prediction......')
   }
-  res <- data.frame('sample' = colnames(Expr_impute))
-  if (method == 'EMP') {
+  res <- data.frame("sample" = colnames(Expr_impute))
+  if (method == "EMP") {
     pred.prob <- predict(gc.mp$MP.EP,
                          Expr_impute %>% t() %>% scale() %>% as.data.frame(),
                          type = 'prob')
