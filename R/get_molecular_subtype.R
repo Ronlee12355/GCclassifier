@@ -4,7 +4,7 @@
 #'
 #' @param Expr a dataframe or matrix with log2 scaled gene expression profile data,
 #' with samples in column and genes in rows, gene names should not be empty.
-#' @param method subtyping classification model, should be either "ACRG" or "EMP".
+#' @param method subtyping classification model, should be either "ACRG", "EMP" or "TCGA".
 #' @param idType a string which indicates which type of gene ids used in the rownames of GEP,
 #' should be one of "SYMBOL","ENSEMBL","ENTREZID" and "REFSEQ".
 #' @param maxp the maxp parameter used in \code{\link[impute]{impute.knn}} function,
@@ -35,7 +35,7 @@
 
 
 get_molecular_subtype <- function(Expr,
-                                  method = c("ACRG", "EMP"),
+                                  method = c("ACRG", "EMP", "TCGA"),
                                   idType = c("SYMBOL", "ENSEMBL", "ENTREZID", "REFSEQ"),
                                   maxp = NULL,
                                   verbose = TRUE) {
@@ -73,8 +73,8 @@ get_molecular_subtype <- function(Expr,
 
   ## 2. Process parameters
   if (is.null(method) |
-      !(method %in% c("ACRG", "EMP")) | length(method) != 1) {
-    stop('method should be one of "ACRG" and "EMP".')
+      !(method %in% c("ACRG", "EMP", "TCGA")) | length(method) != 1) {
+    stop('method should be one of "ACRG", "EMP" and "TCGA".')
   }
   if (is.null(idType) |
       length(idType) != 1 |
@@ -139,7 +139,7 @@ get_molecular_subtype <- function(Expr,
       Expr_impute <- Expr
     }
 
-  } else{
+  } else if(method == 'ACRG'){
     gene_in_model <- gc.acrg.emt$required.gene %in% rownames(Expr)
     if (sum(gene_in_model) < length(gc.acrg.emt$required.gene)) {
       gene_not_in_expr <- gc.acrg.emt$required.gene[!gene_in_model]
@@ -168,6 +168,34 @@ get_molecular_subtype <- function(Expr,
       Expr_impute <- Expr
     }
 
+  } else if(method == 'TCGA'){
+    gene_in_model <- gc.tcga$required.gene %in% rownames(Expr)
+    if (sum(gene_in_model) < length(gc.tcga$required.gene)) {
+      gene_not_in_expr <- gc.tcga$required.gene[!gene_in_model]
+      tmpExpr <- data.frame(matrix(
+        NA,
+        nrow = length(gene_not_in_expr),
+        ncol = ncol(Expr)
+      ))
+      rownames(tmpExpr) <- gene_not_in_expr
+      colnames(tmpExpr) <- colnames(Expr)
+      Expr_impute <- rbind(Expr, tmpExpr)
+      if (is.null(maxp)) {
+        maxp <- nrow(Expr_impute)
+      }
+      if (isTRUE(verbose)) {
+        message('Imputing missing data......')
+      }
+      Expr_impute <- suppressMessages(impute::impute.knn(
+        as.matrix(Expr_impute),
+        maxp = maxp,
+        rowmax = 1
+      )$data)
+      Expr_impute <-
+        as.data.frame(Expr_impute[gc.tcga$required.gene, ])
+    } else{
+      Expr_impute <- Expr
+    }
   }
 
   ## 5. Make prediction
@@ -184,7 +212,7 @@ get_molecular_subtype <- function(Expr,
     res$EP.prob <- pred.prob[, 1]
     res$MP.prob <- pred.prob[, 2]
 
-  } else{
+  } else if(method == 'ACRG'){
     res$MSI.EMT <- predict(gc.acrg.emt$MSI.EMT,
                            Expr_impute %>% t() %>% scale() %>% as.data.frame())
 
@@ -204,6 +232,11 @@ get_molecular_subtype <- function(Expr,
       is.na(TP53) ~ as.character(MSI.EMT),!is.na(TP53) ~ as.character(TP53)
     ))
     res <- res[, c('sample', 'subtype')]
+  } else if(method == 'TCGA'){
+    res$subtype<-predict(
+      gc.tcga$TCGA,
+      Expr_impute[gc.tcga$required.gene,] %>% t() %>% scale() %>% as.data.frame()
+    )
   }
   return(res)
 }

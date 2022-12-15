@@ -76,7 +76,7 @@ BiocManager::install(c(
 
 ## Load example dataset GSE62254
 
-In this case study, we would use `GCclassifier` package to perform gastric cancer molecular subtype prediction on a common gene expression profile. Basically, this dataset (ACRG cohort) is from microarray profiles from 300 gastric tumors from gastric cancer patients named [GSE62254](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE62254) (@Cristescu2015). Using this gene expression profile, we will predict its molecular subtype utilizing both two subtype systems (`EMP` (@Oh2018) and `ACRG`(@Cristescu2015)).
+In this case study, we would use `GCclassifier` package to perform gastric cancer molecular subtype prediction on a common gene expression profile. Basically, this dataset (ACRG cohort) is from microarray profiles from 300 gastric tumors from gastric cancer patients named [GSE62254](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE62254) (@Cristescu2015). Using this gene expression profile, we will predict its molecular subtype utilizing both two subtype systems (`EMP` (@Oh2018), `ACRG`(@Cristescu2015) and `TCGA`(@TCGA2014)).
 
 ```{r, eval=TRUE}
   ## Load example data set from GCclassifier and have a glimpse
@@ -195,6 +195,54 @@ survfit(Surv(DFS.m, Recur) ~ ACRG, data = GSE62254_subtype) %>%
     ylab = 'Disease-free survival (%)',
     legend.title = '',
     legend.lab = c('MSI', 'MSS/EMT', 'MSS/TP53-', 'MSS/TP53+'),
+    ggtheme = theme_classic2(),
+    palette = "Dark1"
+  ) + ggtitle('GSE62254')
+```
+
+## The TCGA subtype prediction
+
+To predict the TCGA subtypes, set the `method` parameter to `TCGA`, the rest is the same:
+
+```{r, eval=TRUE, message=TRUE}
+  tcga.res <- get_molecular_subtype(
+    Expr = GSE62254, ## gene expression profile with log2 transformation
+    method = 'TCGA', ## subtyping system
+    idType = 'SYMBOL' ## the gene identifier type in gene expression profile
+  )
+  table(tcga.res$subtype, GSE62254_subtype$ACRG.sub)
+```
+
+```{r, eval=TRUE}
+GSE62254_subtype$TCGA <- tcga.res$subtype
+survfit(Surv(OS.m, Death) ~ TCGA, data = GSE62254_subtype) %>%
+  ggsurvplot(
+    pval = TRUE,
+    conf.int = F,
+    risk.table = T,
+    risk.table.col = "strata",
+    size = 1.5 ,
+    pval.size = 8,
+    xlab = 'Follow up (months)',
+    ylab = 'Overall survival (%)',
+    legend.title = '',
+    legend.lab = c('CIN', 'EBV', 'GS', 'MSI'),
+    ggtheme = theme_classic2(),
+    palette = "Dark1"
+  ) + ggtitle('GSE62254')
+
+survfit(Surv(DFS.m, Recur) ~ TCGA, data = GSE62254_subtype) %>%
+  ggsurvplot(
+    pval = TRUE,
+    conf.int = F,
+    risk.table = T,
+    risk.table.col = "strata",
+    size = 1.5,
+    pval.size = 8,
+    xlab = 'Follow up (months)',
+    ylab = 'Disease-free survival (%)',
+    legend.title = '',
+    legend.lab = c('CIN', 'EBV', 'GS', 'MSI'),
     ggtheme = theme_classic2(),
     palette = "Dark1"
   ) + ggtitle('GSE62254')

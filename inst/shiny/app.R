@@ -29,7 +29,7 @@ ui <- navbarPage(
             br(),
             radioButtons(
               inputId = "method",label = "Prediction method to choose:",
-              choices = c('EMP', 'ACRG'),
+              choices = c('EMP', 'ACRG', 'TCGA'),
               selected = "EMP",inline = TRUE
             ),
             br(),

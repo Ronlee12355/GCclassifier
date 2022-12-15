@@ -6,7 +6,7 @@
 \usage{
 get_molecular_subtype(
   Expr,
-  method = c("ACRG", "EMP"),
+  method = c("ACRG", "EMP", "TCGA"),
   idType = c("SYMBOL", "ENSEMBL", "ENTREZID", "REFSEQ"),
   maxp = NULL,
   verbose = TRUE
@@ -16,7 +16,7 @@ get_molecular_subtype(
 \item{Expr}{a dataframe or matrix with log2 scaled gene expression profile data,
 with samples in column and genes in rows, gene names should not be empty.}
 
-\item{method}{subtyping classification model, should be either "ACRG" or "EMP".}
+\item{method}{subtyping classification model, should be either "ACRG", "EMP" or "TCGA".}
 
 \item{idType}{a string which indicates which type of gene ids used in the rownames of GEP,
 should be one of "SYMBOL","ENSEMBL","ENTREZID" and "REFSEQ".}
