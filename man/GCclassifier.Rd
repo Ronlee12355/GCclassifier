@@ -19,4 +19,8 @@ https://doi.org/10.1038/s41467-018-04179-8.
 Cristescu, R., Lee, J., Nebozhyn, M. et al. Molecular analysis of gastric cancer
 identifies subtypes associated with distinct clinical outcomes. Nat Med 21, 449–456 (2015).
 https://doi.org/10.1038/nm.3850.
+
+The Cancer Genome Atlas Research Network. Comprehensive molecular characterization of
+gastric adenocarcinoma. Nature 513, 202–209 (2014).
+https://doi.org/10.1038/nature13480
 }
