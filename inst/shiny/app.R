@@ -7,12 +7,6 @@ ui <- navbarPage(
   inverse = T,
   collapsible = T,
 
-  # tabPanel(
-  #   'Home', icon = icon('home'),
-  #   fluidPage(
-  #     h1('GCclassifier: an R package for prediction of gene expression-based molecular subtype of gastric cancer')
-  #   )
-  # ),
   tabPanel(
     'Analyze',
     icon = icon('wrench'),

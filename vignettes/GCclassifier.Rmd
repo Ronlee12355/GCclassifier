@@ -210,7 +210,6 @@ To predict the TCGA subtypes, set the `method` parameter to `TCGA`, the rest is 
     method = 'TCGA', ## subtyping system
     idType = 'SYMBOL' ## the gene identifier type in gene expression profile
   )
-  table(tcga.res$subtype, GSE62254_subtype$ACRG.sub)
 ```
 
 ```{r, eval=TRUE}

@@ -12,7 +12,7 @@
 #' @param verbose a single logical value specifying to display detailed messages (when verbose=TRUE)
 #' or not (when verbose=FALSE).
 #'
-#' @return a dataframe with sample names and predicted molecular subtype labels (with subtype probabilities if method = "EMP").
+#' @return a dataframe with sample names and predicted molecular subtype labels.
 #' @importFrom impute impute.knn
 #' @importFrom stats predict
 #' @importFrom dplyr filter group_by summarize_all case_when mutate left_join pull
@@ -212,8 +212,8 @@ get_molecular_subtype <- function(Expr,
                          type = 'prob')
 
     res$subtype <- ifelse(pred.prob[, 2] >= gc.mp$MP.EP.youden.index, 'MP', 'EP')
-    res$EP.prob <- pred.prob[, 1]
-    res$MP.prob <- pred.prob[, 2]
+    res$EP <- pred.prob[, 1]
+    res$MP <- pred.prob[, 2]
 
   } else if(method == 'ACRG'){
     res$MSI.EMT <- predict(gc.acrg.emt$MSI.EMT,
@@ -240,6 +240,18 @@ get_molecular_subtype <- function(Expr,
       gc.tcga$TCGA,
       Expr_impute[gc.tcga$required.gene,] %>% t() %>% scale() %>% as.data.frame()
     )
+
+    res <- cbind(
+      res,
+      as.data.frame(
+        predict(
+          gc.tcga$TCGA,
+          Expr_impute[gc.tcga$required.gene,] %>% t() %>% scale() %>% as.data.frame(),
+          type = "prob"
+        )
+      )
+    )
+    rownames(res) <- NULL
   }
   return(res)
 }
