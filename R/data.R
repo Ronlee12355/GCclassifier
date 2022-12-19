@@ -3,7 +3,7 @@
 #' A dataset containing the gene expression profile of 300
 #' gastric cancer samples.
 #'
-#' @format A gene expression data frame with 662 gene symbols
+#' @format A gene expression data frame with 1055 gene symbols
 #' and 300 samples:
 #' @source \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE62254}
 "GSE62254"
