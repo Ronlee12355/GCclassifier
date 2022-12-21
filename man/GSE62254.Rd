@@ -5,7 +5,7 @@
 \alias{GSE62254}
 \title{Gene expression profile of GEO dataset GSE62254}
 \format{
-A gene expression data frame with 662 gene symbols
+A gene expression data frame with 1055 gene symbols
 and 300 samples:
 }
 \source{

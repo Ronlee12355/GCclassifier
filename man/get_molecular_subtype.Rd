@@ -7,7 +7,7 @@
 get_molecular_subtype(
   Expr,
   method = c("ACRG", "EMP", "TCGA"),
-  idType = c("SYMBOL", "ENSEMBL", "ENTREZID", "REFSEQ"),
+  idType = "SYMBOL",
   maxp = NULL,
   verbose = TRUE
 )
@@ -19,7 +19,7 @@ with samples in column and genes in rows, gene names should not be empty.}
 \item{method}{subtyping classification model, should be either "ACRG", "EMP" or "TCGA".}
 
 \item{idType}{a string which indicates which type of gene ids used in the rownames of GEP,
-should be one of "SYMBOL","ENSEMBL","ENTREZID" and "REFSEQ".}
+should be one of "SYMBOL","ENSEMBL","ENTREZID" and "REFSEQ". By default is "SYMBOL".}
 
 \item{maxp}{the maxp parameter used in \code{\link[impute]{impute.knn}} function,
 it is optional.}

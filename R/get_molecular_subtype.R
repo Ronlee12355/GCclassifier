@@ -6,7 +6,7 @@
 #' with samples in column and genes in rows, gene names should not be empty.
 #' @param method subtyping classification model, should be either "ACRG", "EMP" or "TCGA".
 #' @param idType a string which indicates which type of gene ids used in the rownames of GEP,
-#' should be one of "SYMBOL","ENSEMBL","ENTREZID" and "REFSEQ".
+#' should be one of "SYMBOL","ENSEMBL","ENTREZID" and "REFSEQ". By default is "SYMBOL".
 #' @param maxp the maxp parameter used in \code{\link[impute]{impute.knn}} function,
 #' it is optional.
 #' @param verbose a single logical value specifying to display detailed messages (when verbose=TRUE)
@@ -39,7 +39,7 @@
 
 get_molecular_subtype <- function(Expr,
                                   method = c("ACRG", "EMP", "TCGA"),
-                                  idType = c("SYMBOL", "ENSEMBL", "ENTREZID", "REFSEQ"),
+                                  idType = "SYMBOL",
                                   maxp = NULL,
                                   verbose = TRUE) {
   ## 1. Check input
