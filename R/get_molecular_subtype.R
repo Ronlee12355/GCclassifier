@@ -4,7 +4,7 @@
 #'
 #' @param Expr a dataframe or matrix with log2 scaled gene expression profile data,
 #' with samples in column and genes in rows, gene names should not be empty.
-#' @param method subtyping classification model, should be either "ACRG", "EMP" or "TCGA".
+#' @param method subtyping classification model, should be either "ACRG", "EMP" or "TCGA". By default is "EMP".
 #' @param idType a string which indicates which type of gene ids used in the rownames of GEP,
 #' should be one of "SYMBOL","ENSEMBL","ENTREZID" and "REFSEQ". By default is "SYMBOL".
 #' @param maxp the maxp parameter used in \code{\link[impute]{impute.knn}} function,
@@ -38,10 +38,11 @@
 
 
 get_molecular_subtype <- function(Expr,
-                                  method = c("ACRG", "EMP", "TCGA"),
+                                  method = "EMP",
                                   idType = "SYMBOL",
                                   maxp = NULL,
-                                  verbose = TRUE) {
+                                  verbose = TRUE
+) {
   ## 1. Check input
   if (isTRUE(verbose)) {
     message('Checking input dataset and parameters......')
