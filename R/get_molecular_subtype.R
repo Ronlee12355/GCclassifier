@@ -47,10 +47,10 @@ get_molecular_subtype <- function(Expr,
   if (isTRUE(verbose)) {
     message('Checking input dataset and parameters......')
   }
-  if (!is.matrix(Expr) & !is.data.frame(Expr)) {
+  if (!is.matrix(Expr) && !is.data.frame(Expr)) {
     stop('Only gene expression profile in dataframe or matrix format is accepted.')
   }
-  if (is.null(rownames(Expr)) | is.null(colnames(Expr))) {
+  if (is.null(rownames(Expr)) || is.null(colnames(Expr))) {
     stop('Rownames and colnames are madatory in gene expression profile.')
   }
   if (sum(apply(Expr, 2, is.numeric)) != ncol(Expr)) {
@@ -76,12 +76,12 @@ get_molecular_subtype <- function(Expr,
   }), ]
 
   ## 2. Process parameters
-  if (is.null(method) |
-      !(method %in% c("ACRG", "EMP", "TCGA")) | length(method) != 1) {
+  if (is.null(method) ||
+      !(method %in% c("ACRG", "EMP", "TCGA")) || length(method) != 1) {
     stop('method should be one of "ACRG", "EMP" and "TCGA".')
   }
-  if (is.null(idType) |
-      length(idType) != 1 |
+  if (is.null(idType) ||
+      length(idType) != 1 ||
       !(idType %in% c("SYMBOL", "ENSEMBL", "ENTREZID", "REFSEQ"))) {
     stop('idType should be one of "SYMBOL", "ENSEMBL", "ENTREZID", "REFSEQ".')
   }
