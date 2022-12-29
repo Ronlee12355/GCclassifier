@@ -7,6 +7,7 @@
 #' @param method subtyping classification model, should be either "ACRG", "EMP" or "TCGA". By default is "EMP".
 #' @param idType a string which indicates which type of gene ids used in the rownames of GEP,
 #' should be one of "SYMBOL","ENSEMBL","ENTREZID" and "REFSEQ". By default is "SYMBOL".
+#' @param minPosterior minimal posterior probablity to classify a sample in TCGA subtyping system. By default is 0.5.
 #' @param maxp the maxp parameter used in \code{\link[impute]{impute.knn}} function,
 #' it is optional.
 #' @param verbose a single logical value specifying to display detailed messages (when verbose=TRUE)
@@ -42,6 +43,7 @@
 get_molecular_subtype <- function(Expr = NULL,
                                   method = "EMP",
                                   idType = "SYMBOL",
+                                  minPosterior = 0.5,
                                   maxp = NULL,
                                   verbose = TRUE
 ) {
@@ -255,6 +257,7 @@ get_molecular_subtype <- function(Expr = NULL,
       )
     )
     rownames(res) <- NULL
+    res$subtype[which(apply(res[, 3:6], 1, max) < minPosterior)] <- NA
   }
   return(res)
 }

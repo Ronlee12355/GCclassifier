@@ -8,6 +8,7 @@ get_molecular_subtype(
   Expr = NULL,
   method = "EMP",
   idType = "SYMBOL",
+  minPosterior = 0.5,
   maxp = NULL,
   verbose = TRUE
 )
@@ -20,6 +21,8 @@ with samples in column and genes in rows, gene names should not be empty.}
 
 \item{idType}{a string which indicates which type of gene ids used in the rownames of GEP,
 should be one of "SYMBOL","ENSEMBL","ENTREZID" and "REFSEQ". By default is "SYMBOL".}
+
+\item{minPosterior}{minimal posterior probablity to classify a sample in TCGA subtyping system. By default is 0.5.}
 
 \item{maxp}{the maxp parameter used in \code{\link[impute]{impute.knn}} function,
 it is optional.}
