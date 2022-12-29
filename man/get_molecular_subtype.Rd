@@ -5,7 +5,7 @@
 \title{Gastric cancer molecular subtype prediction}
 \usage{
 get_molecular_subtype(
-  Expr,
+  Expr = NULL,
   method = "EMP",
   idType = "SYMBOL",
   maxp = NULL,

@@ -39,7 +39,7 @@
 #' result <- get_molecular_subtype(Expr = GSE62254, method = "ACRG", idType = "SYMBOL")
 
 
-get_molecular_subtype <- function(Expr,
+get_molecular_subtype <- function(Expr = NULL,
                                   method = "EMP",
                                   idType = "SYMBOL",
                                   maxp = NULL,
