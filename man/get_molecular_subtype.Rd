@@ -28,7 +28,9 @@ it is optional.}
 or not (when verbose=FALSE).}
 }
 \value{
-a dataframe with sample names and predicted molecular subtype labels.
+a dataframe with sample names and predicted molecular subtype labels. If the method
+is one of "EMP" and "TCGA", predicted probabilities of each subtype (with corresponding subtype c
+olumn names) will be included.
 }
 \description{
 Predict the molecular subtype of gastric cancer samples,
