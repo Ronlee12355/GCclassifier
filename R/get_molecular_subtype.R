@@ -217,8 +217,8 @@ get_molecular_subtype <- function(Expr = NULL,
                          type = 'prob')
 
     res$subtype <- ifelse(pred.prob[, 2] >= gc.mp$MP.EP.youden.index, 'MP', 'EP')
-    res$EP <- pred.prob[, 1]
-    res$MP <- pred.prob[, 2]
+    res$EP <- pred.prob[, 1] %>% round(digits = 2) %>% value2label()
+    res$MP <- pred.prob[, 2] %>% round(digits = 2) %>% value2label()
 
   } else if(method == 'ACRG'){
     res$MSI.EMT <- predict(gc.acrg.emt$MSI.EMT,
@@ -245,17 +245,15 @@ get_molecular_subtype <- function(Expr = NULL,
       gc.tcga$TCGA,
       Expr_impute[gc.tcga$required.gene,] %>% t() %>% scale() %>% as.data.frame()
     )
-
-    res <- cbind(
-      res,
-      as.data.frame(
-        predict(
-          gc.tcga$TCGA,
-          Expr_impute[gc.tcga$required.gene,] %>% t() %>% scale() %>% as.data.frame(),
-          type = "prob"
-        )
-      )
-    )
+    res.tmp <- as.data.frame(predict(
+      gc.tcga$TCGA,
+      Expr_impute[gc.tcga$required.gene, ] %>% t() %>% scale() %>% as.data.frame(),
+      type = "prob"
+    ))
+    res.tmp <- sapply(res.tmp, function(x) {
+      round(x, digits = 2)
+    })
+    res <- cbind(res, res.tmp)
     rownames(res) <- NULL
     res$subtype[which(apply(res[, 3:6], 1, max) < minPosterior)] <- NA
   }

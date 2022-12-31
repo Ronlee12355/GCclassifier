@@ -10,3 +10,8 @@ toLog2 <- function(df) {
     return(FALSE)
   }
 }
+
+value2label <- function(value){
+  res <- ifelse(value > 0.99, '> 0.99', ifelse(value < 0.01, '< 0.01', value))
+  return(res)
+}
