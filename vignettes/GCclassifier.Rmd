@@ -35,7 +35,7 @@ Jiang Li^1,2^, Xin Wang^1,2,3^
 
 # Introduction
 
-The `GCclassifier` package provides molecular subtype classification of gastric cancer models using log2 scaled gene expression profile. The core classification algorithm is [random forest](https://www.stat.berkeley.edu/~breiman/RandomForests/). Moreover, besides R functions, it also provides shiny application which facilitates the non-R users to make gastric cancer molecular subtype prediction.
+The `GCclassifier` package provides molecular subtype classification of gastric cancer models using log2 scaled gene expression profile. The core classification algorithm is [random forest](https://www.stat.berkeley.edu/~breiman/RandomForests/). Moreover, besides R functions, it also provides shiny application which facilitates the non-R users to make gastric cancer molecular subtype prediction. Moreover, the minimal R version required to install the `GCclassifier` package is 4.1.0.
 
 # Input data
 

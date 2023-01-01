@@ -22,7 +22,7 @@ with samples in column and genes in rows, gene names should not be empty.}
 \item{idType}{a string which indicates which type of gene ids used in the rownames of GEP,
 should be one of "SYMBOL","ENSEMBL","ENTREZID" and "REFSEQ". By default is "SYMBOL".}
 
-\item{minPosterior}{minimal posterior probablity to classify a sample in TCGA subtyping system. By default is 0.5.}
+\item{minPosterior}{minimal posterior probability to classify a sample in TCGA subtyping system. By default is 0.5.}
 
 \item{maxp}{the maxp parameter used in \code{\link[impute]{impute.knn}} function,
 it is optional.}
@@ -32,8 +32,8 @@ or not (when verbose=FALSE).}
 }
 \value{
 a dataframe with sample names and predicted molecular subtype labels. If the method
-is one of "EMP" and "TCGA", predicted probabilities of each subtype (with corresponding subtype c
-olumn names) will be included.
+is one of "EMP" and "TCGA", predicted probabilities of each subtype (with corresponding
+subtype column names) will be included.
 }
 \description{
 Predict the molecular subtype of gastric cancer samples,

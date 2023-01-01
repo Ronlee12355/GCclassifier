@@ -7,15 +7,16 @@
 #' @param method subtyping classification model, should be either "ACRG", "EMP" or "TCGA". By default is "EMP".
 #' @param idType a string which indicates which type of gene ids used in the rownames of GEP,
 #' should be one of "SYMBOL","ENSEMBL","ENTREZID" and "REFSEQ". By default is "SYMBOL".
-#' @param minPosterior minimal posterior probablity to classify a sample in TCGA subtyping system. By default is 0.5.
+#' @param minPosterior minimal posterior probability to classify a sample in TCGA subtyping system. By default is 0.5.
 #' @param maxp the maxp parameter used in \code{\link[impute]{impute.knn}} function,
 #' it is optional.
 #' @param verbose a single logical value specifying to display detailed messages (when verbose=TRUE)
 #' or not (when verbose=FALSE).
 #'
 #' @return a dataframe with sample names and predicted molecular subtype labels. If the method
-#' is one of "EMP" and "TCGA", predicted probabilities of each subtype (with corresponding subtype c
-#' olumn names) will be included.
+#' is one of "EMP" and "TCGA", predicted probabilities of each subtype (with corresponding
+#' subtype column names) will be included.
+#'
 #' @importFrom impute impute.knn
 #' @importFrom stats predict
 #' @importFrom dplyr filter group_by summarize_all case_when mutate left_join pull
