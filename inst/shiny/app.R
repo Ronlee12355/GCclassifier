@@ -1,4 +1,5 @@
 library(shiny)
+options(shiny.maxRequestSize=30*1024^2)
 
 ## ======= UI ===========
 ui <- navbarPage(
@@ -27,6 +28,15 @@ ui <- navbarPage(
               selected = "EMP",inline = TRUE
             ),
             br(),
+            conditionalPanel(
+              condition = "input.method == 'TCGA'",
+              sliderInput(
+                'minPosterior',
+                "Minimal posterior probability to classify a sample",
+                min = 0, max = 1, value = 0.5, step = 0.01
+              )
+            ),
+            br(),
             selectizeInput(
               'idType', label = 'Input gene id:',
               choices = c("SYMBOL", "ENSEMBL", "ENTREZID", "REFSEQ"),
@@ -34,6 +44,7 @@ ui <- navbarPage(
             ),
             br(),
             HTML('Example input dataset could download <a href="GCclassifier_example.csv", target="_blank" download="GCclassifier_example.csv">HERE</a>'),
+            helpText('Gene id column should be specified as Symbol in uploaded file'),
             br(),
             br(),
             br(),
@@ -105,10 +116,11 @@ server <- function(input, output, session){
       ),footer = NULL,size='l'))
 
     Sys.sleep(1.5)
-    data.set <- read.csv(input$Expr$datapath, check.names = F, row.names = 1)
+    data.set <- read.csv(input$Expr$datapath, check.names = F, row.names = 'Symbol')
     tryCatch({
         res <- GCclassifier::get_molecular_subtype(
           Expr = data.set, method = input$method ,idType = input$idType,
+          minPosterior = ifelse(is.null(input$minPosterior), 0.5, input$minPosterior),
           maxp = NULL, verbose = F)
       },
       error = function(e){

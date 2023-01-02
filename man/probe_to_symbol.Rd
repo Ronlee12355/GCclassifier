@@ -4,17 +4,18 @@
 \alias{probe_to_symbol}
 \title{Aggregate gene expression profile in probe level to symbol level}
 \usage{
-probe_to_symbol(Expr, annotation, aggregateMethod = c("mean", "median", "max"))
+probe_to_symbol(Expr, annotation, aggregateMethod = "max")
 }
 \arguments{
 \item{Expr}{a dataframe or matrix with log2 scaled gene expression profile, samples in columns,
 probes in rows, rownames corresponding to the probe in annotation file.}
 
 \item{annotation}{probe annotation file, must have "probe" and "symbol" in colnames,
-"probe" corresponding to rownames in Expr and "sample" corresponding to the specified gene identifier.}
+"probe" corresponding to rownames in Expr and "sample" corresponding to the
+specified gene identifier.}
 
-\item{aggregateMethod}{the method to calculate expression values if multiple probes map to the same symbol.
-The default is max.}
+\item{aggregateMethod}{the method to calculate expression values if multiple probes
+map to the same symbol. The default is max.}
 }
 \value{
 a dataframe with log2 scaled gene expression profile in symbol level.

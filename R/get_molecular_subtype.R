@@ -251,12 +251,12 @@ get_molecular_subtype <- function(Expr = NULL,
       Expr_impute[gc.tcga$required.gene, ] %>% t() %>% scale() %>% as.data.frame(),
       type = "prob"
     ))
-    res.tmp <- sapply(res.tmp, function(x) {
-      round(x, digits = 2)
-    })
-    res <- cbind(res, res.tmp)
+    res.tmp.label <- sapply(res.tmp, function(x) {
+      round(x, digits = 2) %>% value2label()
+    }) %>% as.data.frame()
     rownames(res) <- NULL
-    res$subtype[which(apply(res[, 3:6], 1, max) < minPosterior)] <- NA
+    res$subtype[which(apply(res.tmp, 1, max) < minPosterior)] <- NA
+    res <- cbind(res, res.tmp.label)
   }
   return(res)
 }
