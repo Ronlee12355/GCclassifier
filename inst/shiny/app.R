@@ -22,6 +22,8 @@ ui <- navbarPage(
               'Expr',label = 'Gene expression profile data to upload:', buttonLabel = 'File',accept = ".csv"
             ),
             br(),
+            uiOutput('mRNA_view'),
+            br(),
             radioButtons(
               inputId = "method",label = "Prediction method to choose:",
               choices = c('EMP', 'ACRG', 'TCGA'),
@@ -103,6 +105,14 @@ server <- function(input, output, session){
     }
   })
 
+  observeEvent(input$Expr, {
+    req(input$Expr$datapath)
+    df <- read.csv(input$Expr$datapath, check.names = F, row.names = 'Symbol')
+    output$mRNA_view <- renderTable({
+      df[1:8, 1:5]
+    }, rownames = T)
+  })
+
   observeEvent(input$submit, {
     showModal(modalDialog(
       tagList(
@@ -145,7 +155,7 @@ server <- function(input, output, session){
           autoWidth = F,ordering = TRUE,
           dom = 'Bfrtip',
           columnDefs = list(list(className = 'dt-center', targets = "_all")),
-          buttons = c('copy', 'csv')
+          buttons = c('copy', 'csv', 'excel', 'pdf')
         ))
     })
     removeModal()
