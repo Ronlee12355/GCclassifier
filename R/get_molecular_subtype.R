@@ -221,7 +221,7 @@ get_molecular_subtype <- function(Expr = NULL,
     res$EP <- pred.prob[, 1] %>% round(digits = 2) %>% value2label()
     res$MP <- pred.prob[, 2] %>% round(digits = 2) %>% value2label()
 
-  } else if(method == 'ACRG'){
+  } else if(method == "ACRG"){
     res$MSI.EMT <- predict(gc.acrg.emt$MSI.EMT,
                            Expr_impute %>% t() %>% scale() %>% as.data.frame())
 
@@ -242,7 +242,7 @@ get_molecular_subtype <- function(Expr = NULL,
     ))
     res <- res[, c('sample', 'subtype')]
   } else if(method == 'TCGA'){
-    res$subtype<-predict(
+    res$subtype <- predict(
       gc.tcga$TCGA,
       Expr_impute[gc.tcga$required.gene,] %>% t() %>% scale() %>% as.data.frame()
     )
