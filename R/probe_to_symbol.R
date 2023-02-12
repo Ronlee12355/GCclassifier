@@ -58,7 +58,7 @@ probe_to_symbol <-
       )
     }
     if (is.null(colnames(Expr))) {
-      stop('Colnames are madatory in gene annotation.')
+      stop('Colnames are mandatory in gene annotation.')
     }
     annotation <- as.data.frame(annotation)[, c('probe', 'symbol')]
 
@@ -69,7 +69,7 @@ probe_to_symbol <-
     }
 
     if (length(intersect(rownames(Expr), annotation$probe)) <= 0) {
-      stop('No overlapping porbes in gene expression and annotation profiles.')
+      stop('No overlapping probes in gene expression and annotation profiles.')
     }
 
     Expr$probe <- rownames(Expr)
