@@ -22,6 +22,7 @@ ui <- navbarPage(
               'Expr',label = 'Gene expression profile data to upload:', buttonLabel = 'File',accept = ".csv"
             ),
             br(),
+            uiOutput('mRNA_msg'),
             uiOutput('mRNA_view'),
             br(),
             radioButtons(
@@ -50,7 +51,7 @@ ui <- navbarPage(
             br(),
             br(),
             br(),
-            p(actionButton('submit', 'Submit', class='btn-success', style="color:white;", icon = icon('send')),
+            p(actionButton('submit', 'Submit', class='btn-success', style="color:white;", icon = icon('paper-plane')),
               align='center')
           )
         ),
@@ -97,20 +98,55 @@ ui <- navbarPage(
 )
 
 server <- function(input, output, session){
+  data.inputs<-reactiveValues(mRNA=NULL, message = T)
   observe({
     if(is.null(input$Expr$datapath)){
       shinyjs::disable('submit')
     }else{
       shinyjs::enable('submit')
     }
+
+    if(!isTRUE(data.inputs$message) || is.null(input$Expr$datapath)){
+      shinyjs::disable('submit')
+    }else{
+      shinyjs::enable('submit')
+    }
   })
 
-  observeEvent(input$Expr, {
+  observeEvent(input$Expr,{
     req(input$Expr$datapath)
-    df <- read.csv(input$Expr$datapath, check.names = F, row.names = 'Symbol')
-    output$mRNA_view <- renderTable({
-      df[1:8, 1:5]
-    }, rownames = T)
+    df <- read.csv(input$Expr$datapath, check.names = F)
+    if(!('Symbol' %in% colnames(df))){
+      message <- 'Column names should include Symbol in the file to identify gene ids.'
+      data.inputs$message <- F
+      output$mRNA_msg<-renderUI({
+        p(icon('window-close'),message,style='color:red;')
+      })
+    }else{
+      data.inputs$mRNA<-read.csv(input$Expr$datapath, check.names = F, row.names = 'Symbol')
+      if(any(is.na(data.inputs$mRNA))){
+        message <- 'Gene expression profile cannot contain any NA value(s).'
+        data.inputs$message <- F
+        output$mRNA_msg<-renderUI({
+          p(icon('window-close'),message,style='color:red;')
+        })
+      }else if(any(data.inputs$mRNA < 0, na.rm = T)){
+        message <- 'Gene expression profile cannot contain any negative value(s).'
+        data.inputs$message <- F
+        output$mRNA_msg<-renderUI({
+          p(icon('window-close'),message,style='color:red;')
+        })
+      }else{
+        data.inputs$message <- T
+        output$mRNA_msg<-renderUI({
+          p(icon('check-square'),'Data is ready to upload',style='color:green;')
+        })
+      }
+
+      output$mRNA_view<-renderTable({
+        data.inputs$mRNA[1:8,1:5]
+      }, rownames = T)
+    }
   })
 
   observeEvent(input$submit, {
@@ -125,11 +161,10 @@ server <- function(input, output, session){
         )
       ),footer = NULL,size='l'))
 
-    Sys.sleep(1.5)
-    data.set <- read.csv(input$Expr$datapath, check.names = F, row.names = 'Symbol')
+    Sys.sleep(1)
     tryCatch({
         res <- GCclassifier::get_molecular_subtype(
-          Expr = data.set, method = input$method ,idType = input$idType,
+          Expr = data.inputs$mRNA, method = input$method ,idType = input$idType,
           minPosterior = ifelse(is.null(input$minPosterior), 0.5, input$minPosterior),
           maxp = NULL, verbose = F)
       },
