@@ -139,6 +139,12 @@ server <- function(input, output, session){
         output$mRNA_msg<-renderUI({
           p(icon('window-close'),message,style='color:red;')
         })
+      }else if(any(colnames(data.inputs$mRNA) %in% c("SYMBOL","ENSEMBL","ENTREZID", "REFSEQ"))){
+        message <- 'Sample names in expression profile should not contain "SYMBOL", "ENSEMBL", "ENTREZID" and "REFSEQ".'
+        data.inputs$message <- F
+        output$mRNA_msg<-renderUI({
+          p(icon('window-close'),message,style='color:red;')
+        })
       }else{
         data.inputs$message <- T
         output$mRNA_msg<-renderUI({
