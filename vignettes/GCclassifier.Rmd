@@ -42,7 +42,8 @@ The `GCclassifier` package provides molecular subtype classification of gastric 
 `GCclassifier` provides robust *cross platform and sample-type* performance on microarray & RNA-seq datasets, and also requires an expression matrix. Gene names in input data must be [NCBI Entrez](https://www.ncbi.nlm.nih.gov/gene), [Ensembl](http://www.ensembl.org/index.html), [HGNC symbol](http://www.genenames.org/) or [Refseq](https://www.ncbi.nlm.nih.gov/refseq/) identifiers. For gene symbols or Ensembl identifiers, parameter `rownames` must be set to `symbol` or `ensg`, respectively, and `colnames` should be set to sample names. For specifically:
 
 -   Microarray data input should be pre-processed and normalized (log2 transformed).\
--   RNA-sequencing data input should be log2 transformed normalized values (TPM recommended).
+-   RNA-sequencing data input should be log2 transformed normalized values (TPM recommended).\
+-   No negative or NA values were allowed in the microarray/RNA-seq data.
 
 If the input dataset is not log2 transformed, the function will detect the gene expression profile range and perform the log2 transformation automatically if needed.
 
@@ -248,7 +249,15 @@ survfit(Surv(DFS.m, Recur) ~ TCGA, data = GSE62254_subtype) %>%
 ```
 
 # Shiny application
-To facilitate non-R users and simplify programming burdens, a shiny application of molecular subtype prediction was provided simply by running function `get_molecular_subtype_interface()` and the shiny app will automatically appear on browser (Chrome, Firefox, Edge and Safari recommended). Example dataset would be found on the `Analyze` page and predicted results could be downloaded directly. For more information, please run `??get_molecular_subtype_interface`.
+To facilitate non-R users and simplify programming burdens, a shiny application of molecular subtype prediction was provided simply by running function `get_molecular_subtype_interface()` and the shiny app will automatically appear on browser (Chrome, Firefox, Edge and Safari recommended). Example dataset would be found on the `Analyze` page and predicted results could be downloaded directly in various export formats. For more information, please run `??get_molecular_subtype_interface`.   
+
+In addition, Users should carefully check the requirements of uploaded gene expression profile:
+
+-   `Symbol` string should be used to label the gene identifiers.\
+-   No empty or negative values are allowed in the uploaded file.\
+-   Keywords such as "SYMBOL", "ENSEMBL", "ENTREZID" and "REFSEQ" cannot be included in the file columns.   
+
+If you encounter error information of using shiny web application, please carefully check your uploaded gene expression profile, and strictly follow the format of example dataset.   
 
 
 # Session Info
