@@ -121,6 +121,10 @@ get_molecular_subtype <- function(Expr = NULL,
   ## 4. Impute gene expression
   if (method == 'EMP') {
     gene_in_model <- gc.mp$required.gene %in% rownames(Expr)
+    if(sum(gene_in_model) < length(gc.mp$required.gene)*0.5){
+      pct <- 1 - (sum(gene_in_model)/length(gc.mp$required.gene))
+      stop(paste0(round(pct, digits = 3)*100, '% required genes were missing, please check your expression profile.'))
+    }
     if (sum(gene_in_model) < length(gc.mp$required.gene)) {
       gene_not_in_expr <- gc.mp$required.gene[!gene_in_model]
       tmpExpr <- data.frame(matrix(
@@ -150,6 +154,10 @@ get_molecular_subtype <- function(Expr = NULL,
 
   } else if(method == 'ACRG'){
     gene_in_model <- gc.acrg.emt$required.gene %in% rownames(Expr)
+    if(sum(gene_in_model) < length(gc.acrg.emt$required.gene)*0.5){
+      pct <- 1 - (sum(gene_in_model)/length(gc.acrg.emt$required.gene))
+      stop(paste0(round(pct, digits = 3)*100, '% required genes were missing, please check your expression profile.'))
+    }
     if (sum(gene_in_model) < length(gc.acrg.emt$required.gene)) {
       gene_not_in_expr <- gc.acrg.emt$required.gene[!gene_in_model]
       tmpExpr <- data.frame(matrix(
@@ -179,6 +187,10 @@ get_molecular_subtype <- function(Expr = NULL,
 
   } else if(method == 'TCGA'){
     gene_in_model <- gc.tcga$required.gene %in% rownames(Expr)
+    if(sum(gene_in_model) < length(gc.tcga$required.gene)*0.5){
+      pct <- 1 - (sum(gene_in_model)/length(gc.tcga$required.gene))
+      stop(paste0(round(pct, digits = 3)*100, '% required genes were missing, please check your expression profile.'))
+    }
     if (sum(gene_in_model) < length(gc.tcga$required.gene)) {
       gene_not_in_expr <- gc.tcga$required.gene[!gene_in_model]
       tmpExpr <- data.frame(matrix(
