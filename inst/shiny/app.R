@@ -19,7 +19,7 @@ ui <- navbarPage(
           6,
           wellPanel(
             fileInput(
-              'Expr',label = 'Gene expression profile data to upload:', buttonLabel = 'File',accept = ".csv"
+              'Expr',label = 'Gene expression profile data to upload (30MB maximum): ', buttonLabel = 'File',accept = ".csv"
             ),
             br(),
             uiOutput('mRNA_msg'),
@@ -188,7 +188,7 @@ server <- function(input, output, session){
         stop()
       }
     )
-    output$prediction_result<-DT::renderDataTable({
+    output$prediction_result<-DT::renderDataTable(server = F, {
       DT::datatable(
         res,
         rownames=F,
@@ -197,7 +197,7 @@ server <- function(input, output, session){
           paging = TRUE,searching = TRUE,
           scrollX=TRUE,fixedColumns = F,
           autoWidth = F,ordering = TRUE,
-          dom = 'Bfrtip',
+          dom = 'Bfrtip', pageLength = 30,
           columnDefs = list(list(className = 'dt-center', targets = "_all")),
           buttons = c('copy', 'csv', 'excel', 'pdf')
         ))
