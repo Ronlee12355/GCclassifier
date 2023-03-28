@@ -1,5 +1,7 @@
 # GCclassifier: an R package for prediction of gene expression-based molecular subtype of gastric cancer
 
+<img src="https://github.com/Ronlee12355/GCclassifier/blob/main/GCclassifier.png" height="200" align="right" />
+
 Gastric cancer (GC) can be divided into gene expression-based and biologically distinct molecular subtypes. This package is to built to label gastric cancer samples based on their log2 scaled gene expression profiles (GEP). More information about the usage of `GCclassifier` could be found here by running `browseVignettes('GCclassifier')`.   
 
 Installing the package in RStudio is recommended, since RStudio makes it easier for an average user to work with R Markdown and the vignette of `GCclassifier` is written in R Mardown format and the Pandoc [http://pandoc.org/] is required for the vignette creating [https://bookdown.org/yihui/rmarkdown/installation.html].
