@@ -2,7 +2,7 @@
 title: "GCclassifier: an R package for prediction of gene expression-based molecular subtype of gastric cancer"
 output: 
   BiocStyle::html_document:
-    toc: FALSE
+    toc: TRUE
 bibliography: bibliography.bib
 vignette: >
   %\VignetteEncoding{UTF-8}
