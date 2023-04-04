@@ -1,4 +1,4 @@
-# GCclassifier: an R package for the prediction of gene molecular subtypes of gastric cancer
+# GCclassifier: an R package for the prediction of molecular subtypes of gastric cancer
 
 <img src="https://github.com/Ronlee12355/GCclassifier/blob/main/GCclassifier.png" height="200" align="right" />
 
