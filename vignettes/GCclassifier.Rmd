@@ -6,7 +6,7 @@ output:
 bibliography: bibliography.bib
 vignette: >
   %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{GCclassifier: an R package for prediction of gene expression-based molecular subtype of gastric cancer}
+  %\VignetteIndexEntry{GCclassifier: an R package for the prediction molecular subtypes of gastric cancer}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: inline
@@ -27,9 +27,9 @@ Jiang Li^1,2^, Xin Wang^1,2,3^
 
 ^1^ Department of Surgery, The Chinese University of Hong Kong, Hong Kong SAR, China.\
 ^2^ Department of Biomedical Sciences, City University of Hong Kong, Hong Kong SAR, China.\
-^3^ Shenzhen Research Institute, City University of Hong Kong, China.
+^3^ Shenzhen Research Institute, The Chinese University of Hong Kong, Shenzhen, China.
 
--   Contact: [xwang\@surgery.cuhk.edu.hk](mailto:xwang@surgery.cuhk.edu.hk){.email}
+-   Contact: [xinwang\@cuhk.edu.hk](mailto:xinwang@cuhk.edu.hk){.email}
 -   `r paste("Date:", Sys.Date())`
 -   package: `r BiocStyle::pkg_ver("GCclassifier")`
 
