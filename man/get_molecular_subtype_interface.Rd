@@ -2,12 +2,12 @@
 % Please edit documentation in R/get_molecular_subtype_interface.R
 \name{get_molecular_subtype_interface}
 \alias{get_molecular_subtype_interface}
-\title{The shiny interface of gastric cancer molecular subtype prediction}
+\title{The shiny interface of gastric cancer molecular subtypes prediction}
 \usage{
 get_molecular_subtype_interface()
 }
 \description{
-This function runs the shiny app for subtype prediction of gastric cancer.
+This function runs the shiny app for subtypes prediction of gastric cancer. The maximum upload file size is 30MB.
 }
 \examples{
 get_molecular_subtype_interface()

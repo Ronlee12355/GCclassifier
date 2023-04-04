@@ -3,8 +3,7 @@
 \docType{package}
 \name{GCclassifier}
 \alias{GCclassifier}
-\title{GCclassifier: an R package for prediction of gene
-expression-based molecular subtype of gastric cancer}
+\title{GCclassifier: an R package for the prediction of molecular subtypes of gastric cancer}
 \description{
 Gastric cancer (GC) can be divided into gene
 expression-based and biologically distinct molecular subtypes.

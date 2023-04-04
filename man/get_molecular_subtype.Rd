@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_molecular_subtype.R
 \name{get_molecular_subtype}
 \alias{get_molecular_subtype}
-\title{Gastric cancer molecular subtype prediction}
+\title{Gastric cancer molecular subtypes prediction}
 \usage{
 get_molecular_subtype(
   Expr = NULL,
@@ -36,7 +36,7 @@ is one of "EMP" and "TCGA", predicted probabilities of each subtype (with corres
 subtype column names) will be included.
 }
 \description{
-Predict the molecular subtype of gastric cancer samples,
+Predict the molecular subtypes of gastric cancer samples,
 based on log2 scaled gene expression profile (GEP).
 }
 \examples{

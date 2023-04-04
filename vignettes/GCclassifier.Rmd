@@ -1,5 +1,5 @@
 ---
-title: "GCclassifier: an R package for prediction of gene expression-based molecular subtype of gastric cancer"
+title: "GCclassifier: an R package for the prediction of molecular subtypes of gastric cancer"
 output: 
   BiocStyle::html_document:
     toc: TRUE
@@ -72,7 +72,7 @@ if(!requireNamespace('BiocManager')){
 
 BiocManager::install(c(
   'impute', 'dplyr', 'magrittr', 'AnnotationDbi', 'randomForest', 'org.Hs.eg.db', 'shiny', 'DT', 'shinyjs'
-))
+)， force = T)
 ```
 
 ## Load example dataset GSE62254
@@ -90,7 +90,7 @@ In this case study, we would use `GCclassifier` package to perform gastric cance
   identical(colnames(GSE62254), GSE62254_subtype$GEO_ID)
 ```
 
-The gene expression dataset was mapped from probes to gene symbols, and if multiple probes mapped to the same gene, the probe with the maximum expression value would be kept. In GSE62254, the `rownames(GSE62254)` were gene symbols and the `colnames(GSE62254)` were the sample names.
+The gene expression dataset was downloaded using R package `GEOquery`, and the expression levels were mapped from probes to gene symbols, and if multiple probes mapped to the same gene, the probe with the maximum expression value would be kept. In GSE62254, the `rownames(GSE62254)` were gene symbols and the `colnames(GSE62254)` were the sample names.
 
 ## The EMP subtype prediction
 
@@ -250,6 +250,11 @@ survfit(Surv(DFS.m, Recur) ~ TCGA, data = GSE62254_subtype) %>%
 
 # Shiny application
 To facilitate non-R users and simplify programming burdens, a shiny application of molecular subtype prediction was provided simply by running function `get_molecular_subtype_interface()` and the shiny app will automatically appear on browser (Chrome, Firefox, Edge and Safari recommended). Example dataset would be found on the `Analyze` page and predicted results could be downloaded directly in various export formats. For more information, please run `??get_molecular_subtype_interface`.   
+
+```{r, eval=FALSE}
+  get_molecular_subtype_interface()
+```
+
 
 In addition, Users should carefully check the requirements of uploaded gene expression profile:
 

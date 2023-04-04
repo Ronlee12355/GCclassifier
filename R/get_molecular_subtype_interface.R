@@ -1,5 +1,5 @@
-#' @title The shiny interface of gastric cancer molecular subtype prediction
-#' @description This function runs the shiny app for subtype prediction of gastric cancer. The maximum upload file size is 30MB.
+#' @title The shiny interface of gastric cancer molecular subtypes prediction
+#' @description This function runs the shiny app for subtypes prediction of gastric cancer. The maximum upload file size is 30MB.
 #' @export
 #' @import shiny
 #'

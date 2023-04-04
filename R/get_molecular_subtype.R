@@ -1,5 +1,5 @@
-#' @title Gastric cancer molecular subtype prediction
-#' @description Predict the molecular subtype of gastric cancer samples,
+#' @title Gastric cancer molecular subtypes prediction
+#' @description Predict the molecular subtypes of gastric cancer samples,
 #' based on log2 scaled gene expression profile (GEP).
 #'
 #' @param Expr a dataframe or matrix with log2 scaled gene expression profile data,
