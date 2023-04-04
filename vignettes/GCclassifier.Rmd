@@ -43,7 +43,8 @@ The `GCclassifier` package provides molecular subtype classification of gastric 
 
 -   Microarray data input should be pre-processed and normalized (log2 transformed).\
 -   RNA-sequencing data input should be log2 transformed normalized values (TPM recommended).\
--   No negative or NA values were allowed in the microarray/RNA-seq data.
+-   No negative or NA values were allowed in the microarray/RNA-seq data.\
+-   At least two samples were required in the microarray/RNA-seq data.
 
 If the input dataset is not log2 transformed, the function will detect the gene expression profile range and perform the log2 transformation automatically if needed.
 

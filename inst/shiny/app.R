@@ -145,6 +145,12 @@ server <- function(input, output, session){
         output$mRNA_msg<-renderUI({
           p(icon('window-close'),message,style='color:red;')
         })
+      }else if(ncol(data.inputs$mRNA) <= 1){
+        message <- 'Sample size in expression profile should be larger than one.'
+        data.inputs$message <- F
+        output$mRNA_msg<-renderUI({
+          p(icon('window-close'),message,style='color:red;')
+        })
       }else{
         data.inputs$message <- T
         output$mRNA_msg<-renderUI({

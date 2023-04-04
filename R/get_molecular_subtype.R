@@ -72,10 +72,14 @@ get_molecular_subtype <- function(Expr = NULL,
       'Sample names in expression profile should not contain "SYMBOL", "ENSEMBL", "ENTREZID" and "REFSEQ".'
     )
   }
+  if(ncol(Expr) <= 1){
+    stop('The sample size of expression profile should be larger than one.')
+  }
   if (is.matrix(Expr)) {
     message('Transforming the input gene expression profile into dataframe format.')
     Expr <- as.data.frame(Expr)
   }
+
   Expr <- Expr[apply(Expr, 1, function(x) {
     mad(x) > 0
   }), ]
@@ -219,7 +223,7 @@ get_molecular_subtype <- function(Expr = NULL,
     }
   }
 
-  ## 5. Make prediction
+  ## 5. Making prediction
   if (isTRUE(verbose)) {
     message('Making molecular subtype prediction......')
   }
@@ -237,22 +241,29 @@ get_molecular_subtype <- function(Expr = NULL,
     res$MSI.EMT <- predict(gc.acrg.emt$MSI.EMT,
                            Expr_impute %>% t() %>% scale() %>% as.data.frame())
 
-    tmp <-
-      res[res$MSI.EMT %in% c('MSS/TP53+', 'MSS/TP53-'), 'sample', drop = F]
+    if(sum(res$MSI.EMT %in% c('MSS/TP53+', 'MSS/TP53-')) > 1){
+      tmp <-
+        res[res$MSI.EMT %in% c('MSS/TP53+', 'MSS/TP53-'), 'sample', drop = F]
+      Expr.tmp <- Expr_impute[rownames(gc.acrg.emt$TP53$importance),] %>% t() %>% scale() %>% t() %>% as.data.frame()
+      tmp$TP53.score <- Expr.tmp[, tmp$sample] %>% t() %>% as.data.frame() %>%
+        dplyr::mutate(score=(MDM2+CDKN1A)/2) %>% dplyr::pull(score)
+      # tmp$TP53.score <- Expr_impute[rownames(gc.acrg.emt$TP53$importance), tmp$sample] %>% t() %>%
+      #   scale() %>% as.data.frame() %>% dplyr::mutate(score=(MDM2+CDKN1A)/2) %>% dplyr::pull(score)
 
-    tmp$TP53.score <- Expr_impute[rownames(gc.acrg.emt$TP53$importance), tmp$sample] %>% t() %>%
-      scale() %>% as.data.frame() %>% dplyr::mutate(score=(MDM2+CDKN1A)/2) %>% dplyr::pull(score)
+      tmp$TP53 <- ifelse(tmp$TP53.score >= gc.acrg.emt$ACRG.youden.index,
+                         'MSS/TP53+',
+                         'MSS/TP53-')
 
-    tmp$TP53 <- ifelse(tmp$TP53.score >= gc.acrg.emt$ACRG.youden.index ,
-                       'MSS/TP53+',
-                       'MSS/TP53-')
+      res <- res %>% left_join(tmp[, c('sample', 'TP53')], by = 'sample')
 
-    res <- res %>% left_join(tmp[, c('sample', 'TP53')], by = 'sample')
-
-    res <- res %>% dplyr::mutate(subtype = dplyr::case_when(
-      is.na(TP53) ~ as.character(MSI.EMT),!is.na(TP53) ~ as.character(TP53)
-    ))
+      res <- res %>% dplyr::mutate(subtype = dplyr::case_when(
+        is.na(TP53) ~ as.character(MSI.EMT),!is.na(TP53) ~ as.character(TP53)
+      ))
+    }else{
+      res$subtype <- res$MSI.EMT
+    }
     res <- res[, c('sample', 'subtype')]
+
   } else if(method == 'TCGA'){
     res$subtype <- predict(
       gc.tcga$TCGA,
