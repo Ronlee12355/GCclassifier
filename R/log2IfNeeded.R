@@ -7,7 +7,7 @@
 #'
 log2IfNeeded <- function(df = NULL){
   if(is.null(df)){
-    stop("Data frame 'df' has not been specified")
+    stop("Data frame/matrix 'df' has not been specified")
   }
   qx <-
     as.numeric(quantile(df, c(0., 0.25, 0.5, 0.75, 0.99, 1.0), na.rm = T))
