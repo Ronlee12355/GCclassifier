@@ -2,6 +2,7 @@
 
 export(get_molecular_subtype)
 export(get_molecular_subtype_interface)
+export(log2IfNeeded)
 export(probe_to_symbol)
 import(org.Hs.eg.db)
 import(randomForest)

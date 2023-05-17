@@ -1,12 +1,13 @@
 ---
 title: "GCclassifier: an R package for the prediction of molecular subtypes of gastric cancer"
+date: "`r Sys.Date()`"
 output: 
   BiocStyle::html_document:
     toc: TRUE
 bibliography: bibliography.bib
 vignette: >
   %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{GCclassifier: an R package for the prediction molecular subtypes of gastric cancer}
+  %\VignetteIndexEntry{GCclassifier: an R package for the prediction of molecular subtypes of gastric cancer}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: inline
@@ -30,8 +31,7 @@ Jiang Li^1,2^, Xin Wang^1,2,3^
 ^3^ Shenzhen Research Institute, The Chinese University of Hong Kong, Shenzhen, China.
 
 -   Contact: [xinwang\@cuhk.edu.hk](mailto:xinwang@cuhk.edu.hk){.email}
--   `r paste("Date:", Sys.Date())`
--   package: `r BiocStyle::pkg_ver("GCclassifier")`
+-   Package: `r BiocStyle::pkg_ver("GCclassifier")`
 
 # Introduction
 
