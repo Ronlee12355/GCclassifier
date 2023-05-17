@@ -1,13 +1,13 @@
 # GCclassifier: an R package for the prediction of molecular subtypes of gastric cancer
 
-<img src="https://github.com/Ronlee12355/GCclassifier/blob/main/GCclassifier.png" height="200" align="right" />
+<img src="https://github.com/Ronlee12355/GCclassifier/blob/main/GCclassifier.png" height="200" align="right"/>
 
-Gastric cancer (GC) can be divided into gene expression-based and biologically distinct molecular subtypes. This package is to built to predict gastric cancer samples based on their log2 scaled gene expression profiles (GEP). More information about the usage of `GCclassifier` could be found here by running `browseVignettes('GCclassifier')`.   
+Gastric cancer (GC) can be divided into gene expression-based and biologically distinct molecular subtypes. This package is to built to predict gastric cancer samples based on their log2 scaled gene expression profiles (GEP). More information about the usage of `GCclassifier` could be found here by running `browseVignettes('GCclassifier')`.
 
-Installing the package in RStudio is recommended, since RStudio makes it easier for an average user to work with R Markdown and the vignette of `GCclassifier` is written in R Mardown format and the Pandoc [http://pandoc.org/] is required for the vignette creating [https://bookdown.org/yihui/rmarkdown/installation.html].
-
+Installing the package in RStudio is recommended, since RStudio makes it easier for an average user to work with R Markdown and the vignette of `GCclassifier` is written in R Mardown format and the Pandoc [<http://pandoc.org/>] is required for the vignette creating [<https://bookdown.org/yihui/rmarkdown/installation.html>].
 
 **Install package**
+
 ```{r}
   # Required packages: run if not already installed
   if(!requireNamespace('BiocManager')){
@@ -29,6 +29,7 @@ Installing the package in RStudio is recommended, since RStudio makes it easier 
 ```
 
 **Quick start**
+
 ```{r}
   library(GCclassifier)
   data("GSE62254")
@@ -51,18 +52,17 @@ Installing the package in RStudio is recommended, since RStudio makes it easier 
     idType = 'SYMBOL'
   )
 ```
-**Design**   
-`GCclassifier` package builds on standard R package workflow and was developed in RStudio following guidelines in R packages [http://r-pkgs.had.co.nz/].
 
-**References**      
-Oh, S.C., Sohn, B.H., Cheong, JH. et al. Clinical and genomic landscape of gastric cancer with a mesenchymal phenotype. Nat Commun 9, 1777 (2018). https://doi.org/10.1038/s41467-018-04179-8             
+**Design**\
+`GCclassifier` package builds on standard R package workflow and was developed in RStudio following guidelines in R packages [<http://r-pkgs.had.co.nz/>].
 
-Cristescu, R., Lee, J., Nebozhyn, M. et al. Molecular analysis of gastric cancer identifies subtypes associated with distinct clinical outcomes. Nat Med 21, 449–456 (2015). https://doi.org/10.1038/nm.3850     
+**References**\
+Oh, S.C., Sohn, B.H., Cheong, JH. et al. Clinical and genomic landscape of gastric cancer with a mesenchymal phenotype. Nat Commun 9, 1777 (2018). <https://doi.org/10.1038/s41467-018-04179-8>
 
-The Cancer Genome Atlas Research Network. Comprehensive molecular characterization of gastric adenocarcinoma. Nature 513, 202–209 (2014).
-https://doi.org/10.1038/nature13480      
+Cristescu, R., Lee, J., Nebozhyn, M. et al. Molecular analysis of gastric cancer identifies subtypes associated with distinct clinical outcomes. Nat Med 21, 449--456 (2015). <https://doi.org/10.1038/nm.3850>
 
-R Core Team. R: A Language and Environment for Statistical Computing [Internet]. Vienna, Austria: R Foundation for Statistical Computing; 2013. http://www.R-project.org/
+The Cancer Genome Atlas Research Network. Comprehensive molecular characterization of gastric adenocarcinoma. Nature 513, 202--209 (2014). <https://doi.org/10.1038/nature13480>
 
-Wickham, H. R Packages: Organize, Test, Document, and Share Your Code. 1st ed. O’Reilly Media. 2015.    
+R Core Team. R: A Language and Environment for Statistical Computing [Internet]. Vienna, Austria: R Foundation for Statistical Computing; 2013. <http://www.R-project.org/>
 
+Wickham, H. R Packages: Organize, Test, Document, and Share Your Code. 1st ed. O'Reilly Media. 2015.

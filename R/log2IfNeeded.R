@@ -5,8 +5,8 @@
 #' @return log2 scaled gene expression in data frame or matrix format
 #' @export
 #'
-log2IfNeeded <- function(df = NULL){
-  if(is.null(df)){
+log2IfNeeded <- function(df = NULL) {
+  if (is.null(df)) {
     stop("Data frame/matrix 'df' has not been specified")
   }
   qx <-
