@@ -93,7 +93,7 @@ In this case study, we would use `GCclassifier` package to perform gastric cance
 
 The gene expression dataset was downloaded using R package `GEOquery`, and the expression levels were mapped from probes to gene symbols, and if multiple probes mapped to the same gene, the probe with the maximum expression value would be kept. In GSE62254, the `rownames(GSE62254)` were gene symbols and the `colnames(GSE62254)` were the sample names.
 
-## The EMP subtype prediction
+## Case study 1: The EMP subtype prediction
 
 To predict the EMP subtypes, the GSE62254 would be the input data of gene expression and more information of other parameters would be found in the help page of `get_molecular_subtype`:
 
@@ -154,7 +154,7 @@ After predicting the EMP subtypes of GSE62254, the survival outcomes of the pred
   ) + ggtitle('GSE62254 - DFS')
 ```
 
-## The ACRG subtype prediction
+## Case study 2: The ACRG subtype prediction
 
 To predict the ACRG subtypes, except changing the `method` parameter from `EMP` to `ACRG`, the rest is the same:
 
@@ -202,7 +202,7 @@ survfit(Surv(DFS.m, Recur) ~ ACRG, data = GSE62254_subtype) %>%
   ) + ggtitle('GSE62254')
 ```
 
-## The TCGA subtype prediction
+## Case study 3: The TCGA subtype prediction
 
 To predict the TCGA subtypes, set the `method` parameter to `TCGA`, the rest is the same:
 
