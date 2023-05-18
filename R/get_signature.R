@@ -13,7 +13,7 @@ get_signature <- function(method = 'EMP') {
   if (is.null(method)) {
     stop('Choose which molecular subtype signature genes should be reported')
   }
-  if (!(method %in% c('EMP', ' TCGA', 'ACRG'))) {
+  if (!(method %in% c('EMP', 'TCGA', 'ACRG'))) {
     stop("The molecular subtype should be among 'EMP','TCGA' and 'ACRG'")
   }
 
@@ -21,7 +21,7 @@ get_signature <- function(method = 'EMP') {
     ex <- gc.mp$required.gene
   } else if (method == 'TCGA') {
     ex <- gc.tcga$required.gene
-  } else{
+  } else if (method == 'ACRG'){
     ex <- gc.acrg.emt$required.gene
   }
   ex.id <- suppressMessages(
