@@ -30,7 +30,7 @@ Jiang Li^1,2^, Xin Wang^1,2,3^
 ^2^ Department of Biomedical Sciences, City University of Hong Kong, Hong Kong SAR, China.\
 ^3^ Shenzhen Research Institute, The Chinese University of Hong Kong, Shenzhen, China.
 
--   Contact: [xinwang\@cuhk.edu.hk](mailto:xinwang@cuhk.edu.hk){.email}
+-   Contact: [xinwang\@cuhk.edu.hk](mailto:xinwang@cuhk.edu.hk){.email}   
 -   Package: `r BiocStyle::pkg_ver("GCclassifier")`
 
 # Introduction
