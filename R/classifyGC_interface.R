@@ -4,8 +4,8 @@
 #' @import shiny
 #'
 #' @examples
-#' get_molecular_subtype_interface()
-get_molecular_subtype_interface <- function() {
+#' classifyGC_interface()
+classifyGC_interface <- function() {
   appDir <- system.file('shiny', package = 'GCclassifier')
 
   if (appDir == '') {

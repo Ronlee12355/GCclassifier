@@ -98,7 +98,7 @@ The gene expression dataset was downloaded using R package `GEOquery`, and the e
 To predict the EMP subtypes, the GSE62254 would be the input data of gene expression and more information of other parameters would be found in the help page of `get_molecular_subtype`:
 
 ```{r, eval=TRUE, message=TRUE}
-  emp.res <- get_molecular_subtype(
+  emp.res <- classifyGC(
     Expr = GSE62254, ## gene expression profile with log2 transformation
     method = 'EMP', ## subtyping system
     idType = 'SYMBOL' ## the gene identifier type in gene expression profile
@@ -159,7 +159,7 @@ After predicting the EMP subtypes of GSE62254, the survival outcomes of the pred
 To predict the ACRG subtypes, except changing the `method` parameter from `EMP` to `ACRG`, the rest is the same:
 
 ```{r, eval=TRUE, message=TRUE}
-  acrg.res <- get_molecular_subtype(
+  acrg.res <- classifyGC(
     Expr = GSE62254, ## gene expression profile with log2 transformation
     method = 'ACRG', ## subtyping system
     idType = 'SYMBOL' ## the gene identifier type in gene expression profile
@@ -207,7 +207,7 @@ survfit(Surv(DFS.m, Recur) ~ ACRG, data = GSE62254_subtype) %>%
 To predict the TCGA subtypes, set the `method` parameter to `TCGA`, the rest is the same:
 
 ```{r, eval=TRUE, message=TRUE}
-  tcga.res <- get_molecular_subtype(
+  tcga.res <- classifyGC(
     Expr = GSE62254, ## gene expression profile with log2 transformation
     method = 'TCGA', ## subtyping system
     idType = 'SYMBOL' ## the gene identifier type in gene expression profile
@@ -250,10 +250,10 @@ survfit(Surv(DFS.m, Recur) ~ TCGA, data = GSE62254_subtype) %>%
 ```
 
 # Shiny application
-To facilitate non-R users and simplify programming burdens, a shiny application of molecular subtype prediction was provided simply by running function `get_molecular_subtype_interface()` and the shiny app will automatically appear on browser (Chrome, Firefox, Edge and Safari recommended). Example dataset would be found on the `Analyze` page and predicted results could be downloaded directly in various export formats. For more information, please run `??get_molecular_subtype_interface`.   
+To facilitate non-R users and simplify programming burdens, a shiny application of molecular subtype prediction was provided simply by running function `classifyGC_interface()` and the shiny app will automatically appear on browser (Chrome, Firefox, Edge and Safari recommended). Example dataset would be found on the `Analyze` page and predicted results could be downloaded directly in various export formats. For more information, please run `??classifyGC_interface`.   
 
 ```{r, eval=FALSE}
-  get_molecular_subtype_interface()
+  classifyGC_interface()
 ```
 
 

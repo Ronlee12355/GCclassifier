@@ -38,10 +38,10 @@
 #'
 #' @examples
 #' data("GSE62254")
-#' result <- get_molecular_subtype(Expr = GSE62254, method = "ACRG", idType = "SYMBOL")
+#' result <- classifyGC(Expr = GSE62254, method = "ACRG", idType = "SYMBOL")
 
 
-get_molecular_subtype <- function(Expr = NULL,
+classifyGC <- function(Expr = NULL,
                                   method = "EMP",
                                   idType = "SYMBOL",
                                   minPosterior = 0.5,
