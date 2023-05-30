@@ -56,10 +56,10 @@ Before running the example codes in the vignette, the following R packages are r
 
 -   dplyr (dataframe manipulation)
 -   magrittr (pipe operator)
--   randomForest (prediction model)
+-   randomForest (prediction classifier)
 -   BiocManager (package installation)
--   shiny (shiny webpage)
--   DT (shiny webpage)
+-   shiny (Shiny webpage)
+-   DT (interactive tables in Shiny)
 -   shinyjs (shiny webpage)
 -   impute (missing data imputation)
 -   AnnotationDbi (gene identifier converter)
