@@ -34,19 +34,19 @@ Installing the package in RStudio is recommended, since RStudio makes it easier 
   library(GCclassifier)
   data("GSE62254")
   
-  emp.res <- get_molecular_subtype(
+  emp.res <- classifyGC(
     Expr = GSE62254, ## gene expression profile with log2 transformation
     method = 'EMP', ## subtyping system
     idType = 'SYMBOL' ## the gene identifier type in gene expression profile
   )
 
-  acrg.res <- get_molecular_subtype(
+  acrg.res <- classifyGC(
     Expr = GSE62254, 
     method = 'ACRG', 
     idType = 'SYMBOL' 
   )
   
-  tcga.res <- get_molecular_subtype(
+  tcga.res <- classifyGC(
     Expr = GSE62254, 
     method = 'TCGA', 
     idType = 'SYMBOL'
