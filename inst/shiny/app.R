@@ -178,7 +178,7 @@ server <- function(input, output, session){
 
     Sys.sleep(1)
     tryCatch({
-        res <- GCclassifier::get_molecular_subtype(
+        res <- GCclassifier::classifyGC(
           Expr = data.inputs$mRNA, method = input$method ,idType = input$idType,
           minPosterior = ifelse(is.null(input$minPosterior), 0.5, input$minPosterior),
           maxp = NULL, verbose = F)
