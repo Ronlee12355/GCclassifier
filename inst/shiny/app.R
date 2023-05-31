@@ -32,7 +32,16 @@ ui <- navbarPage(
             ),
             br(),
             conditionalPanel(
-              condition = "input.method == 'TCGA'",
+              condition = "input.method == 'EMP'",
+              radioButtons(
+                'useMinPosterior',
+                "Whether minimal posterior probability is used to classify a sample:",
+                choices = c('Yes', 'No'), selected = 'No',inline = TRUE
+              )
+            ),
+            br(),
+            conditionalPanel(
+              condition = "input.method == 'TCGA' || input.useMinPosterior == 'Yes'",
               sliderInput(
                 'minPosterior',
                 "Minimal posterior probability to classify a sample",
@@ -176,11 +185,12 @@ server <- function(input, output, session){
         )
       ),footer = NULL,size='l'))
 
-    Sys.sleep(1)
+    Sys.sleep(1.5)
     tryCatch({
         res <- GCclassifier::classifyGC(
           Expr = data.inputs$mRNA, method = input$method ,idType = input$idType,
           minPosterior = ifelse(is.null(input$minPosterior), 0.5, input$minPosterior),
+          useMinPosterior = ifelse(input$useMinPosterior == 'Yes', T, F),
           maxp = NULL, verbose = F)
       },
       error = function(e){
