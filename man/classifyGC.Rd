@@ -9,6 +9,7 @@ classifyGC(
   method = "EMP",
   idType = "SYMBOL",
   minPosterior = 0.5,
+  useMinPosterior = FALSE,
   maxp = NULL,
   verbose = TRUE
 )
@@ -23,6 +24,8 @@ with samples in column and genes in rows, gene names should not be empty.}
 should be one of "SYMBOL","ENSEMBL","ENTREZID" and "REFSEQ". By default is "SYMBOL".}
 
 \item{minPosterior}{minimal posterior probability to classify a sample in TCGA subtyping system. By default is 0.5.}
+
+\item{useMinPosterior}{whether the minPosterior threshold is also used for EMT subtyping. By default is FALSE.}
 
 \item{maxp}{the maxp parameter used in \code{\link[impute]{impute.knn}} function,
 it is optional.}

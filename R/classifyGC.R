@@ -8,6 +8,7 @@
 #' @param idType a string which indicates which type of gene ids used in the rownames of GEP,
 #' should be one of "SYMBOL","ENSEMBL","ENTREZID" and "REFSEQ". By default is "SYMBOL".
 #' @param minPosterior minimal posterior probability to classify a sample in TCGA subtyping system. By default is 0.5.
+#' @param useMinPosterior whether the minPosterior threshold is also used for EMT subtyping. By default is FALSE.
 #' @param maxp the maxp parameter used in \code{\link[impute]{impute.knn}} function,
 #' it is optional.
 #' @param verbose a single logical value specifying to display detailed messages (when verbose=TRUE)
@@ -42,12 +43,13 @@
 
 
 classifyGC <- function(Expr = NULL,
-                                  method = "EMP",
-                                  idType = "SYMBOL",
-                                  minPosterior = 0.5,
-                                  maxp = NULL,
-                                  verbose = TRUE
-) {
+                       method = "EMP",
+                       idType = "SYMBOL",
+                       minPosterior = 0.5,
+                       useMinPosterior = FALSE,
+                       maxp = NULL,
+                       verbose = TRUE) {
+
   ## 1. Check input
   if (isTRUE(verbose)) {
     message('Checking input dataset and parameters......')
@@ -93,6 +95,18 @@ classifyGC <- function(Expr = NULL,
       length(idType) != 1 ||
       !(idType %in% c("SYMBOL", "ENSEMBL", "ENTREZID", "REFSEQ"))) {
     stop('idType should be one of "SYMBOL", "ENSEMBL", "ENTREZID", "REFSEQ".')
+  }
+
+  if(method == 'TCGA'){
+    if(minPosterior < 0 || minPosterior > 1 || !is.numeric(minPosterior)){
+      stop('minPosterior should between 0 to 1.')
+    }
+  }
+
+  if(isTRUE(useMinPosterior)){
+    if(minPosterior < 0 || minPosterior > 1 || !is.numeric(minPosterior)){
+      stop('minPosterior should between 0 to 1.')
+    }
   }
 
   ## 3. Convert gene id to gene symbol
@@ -232,8 +246,11 @@ classifyGC <- function(Expr = NULL,
     pred.prob <- predict(gc.mp$MP.EP,
                          Expr_impute %>% t() %>% scale() %>% as.data.frame(),
                          type = 'prob')
-
-    res$subtype <- ifelse(pred.prob[, 2] >= gc.mp$MP.EP.youden.index, 'MP', 'EP')
+    if(isTRUE(useMinPosterior)){
+      res$subtype <- ifelse(pred.prob[, 2] >= minPosterior, 'MP', 'EP')
+    }else{
+      res$subtype <- ifelse(pred.prob[, 2] >= gc.mp$MP.EP.youden.index, 'MP', 'EP')
+    }
     res$EP <- pred.prob[, 1] %>% round(digits = 2) %>% value2label()
     res$MP <- pred.prob[, 2] %>% round(digits = 2) %>% value2label()
 
