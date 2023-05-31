@@ -1,7 +1,7 @@
 Package: GCclassifier
 Type: Package
 Title: GCclassifier: an R package for the prediction of molecular subtypes of gastric cancer
-Version: 0.1.0
+Version: 0.1.1
 Date: 2022-11-21 
 Author@R: person("Jiang", "Li", email="jli.ww@my.cityu.edu.hk", 
                                 role=c("aut", "cre"))
