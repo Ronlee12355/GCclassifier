@@ -42,7 +42,7 @@ The `GCclassifier` package provides molecular subtype classification of gastric 
 `GCclassifier` provides robust *cross platform and sample-type* performance on microarray & RNA-seq datasets, and also requires an expression matrix. Gene names in input data must be [NCBI Entrez](https://www.ncbi.nlm.nih.gov/gene), [Ensembl](http://www.ensembl.org/index.html), [HGNC symbol](http://www.genenames.org/) or [Refseq](https://www.ncbi.nlm.nih.gov/refseq/) identifiers. For gene symbols or Ensembl identifiers, parameter `rownames` must be set to `symbol` or `ensg`, respectively, and `colnames` should be set to sample names. For specifically:
 
 -   Microarray data input should be pre-processed and normalized (log2 transformed).\
--   RNA-sequencing data input should be log2 transformed normalized values (TPM recommended).\
+-   RNA-sequencing data input should be log2 transformed normalized values (log2 TPM recommended).\
 -   No negative or NA values were allowed in the microarray/RNA-seq data.\
 -   At least two samples were required in the microarray/RNA-seq data.
 
@@ -252,7 +252,7 @@ survfit(Surv(DFS.m, Recur) ~ TCGA, data = GSE62254_subtype) %>%
 ```
 
 # Shiny application
-To facilitate non-R users and simplify programming burdens, a shiny application of molecular subtype prediction was provided simply by running function `classifyGC_interface()` and the shiny app will automatically appear on browser (Chrome, Firefox, Edge and Safari recommended). Example dataset would be found on the `Analyze` page and predicted results could be downloaded directly in various export formats. For more information, please run `??classifyGC_interface`.  
+To facilitate non-R users and simplify programming burdens, a Shiny application of molecular subtype prediction was provided simply by running function `classifyGC_interface()` and the Shiny app will automatically appear on browser (Chrome, Firefox, Edge and Safari recommended). Example dataset would be found on the `Analyze` page and predicted results could be downloaded directly in various export formats. For more information, please run `??classifyGC_interface`.  
 
 ```{r, eval=FALSE}
   classifyGC_interface()
