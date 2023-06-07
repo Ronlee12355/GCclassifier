@@ -2,9 +2,9 @@
 
 <img src="https://github.com/Ronlee12355/GCclassifier/blob/main/GCclassifier.png" height="200" align="right"/>
 
-Gastric cancer (GC) can be divided into gene expression-based and biologically distinct molecular subtypes. This package is to built to predict gastric cancer samples based on their log2 scaled gene expression profiles (GEP). More information about the usage of `GCclassifier` could be found here by running `browseVignettes('GCclassifier')`.
+Gastric cancer (GC) can be divided into gene expression-based and biologically distinct molecular subtypes. This package is to built to predict gastric cancer samples based on their log2 scaled gene expression profiles (GEP). More information about the usage of `GCclassifier` could be found by running `browseVignettes('GCclassifier')`.
 
-Installing the package in RStudio is recommended, since RStudio makes it easier for an average user to work with R Markdown and the vignette of `GCclassifier` is written in R Mardown format and the Pandoc [<http://pandoc.org/>] is required for the vignette creating [<https://bookdown.org/yihui/rmarkdown/installation.html>]. The Rstudio IDE can be downloaded [here](www.rstudio.com).
+Installing the package in RStudio is recommended, since RStudio makes it easier for an average user to work with R Markdown and the vignette of `GCclassifier` is written in R Mardown format and the Pandoc [<http://pandoc.org/>] is required for the vignette creating [<https://bookdown.org/yihui/rmarkdown/installation.html>]. The RStudio IDE can be downloaded [www.rstudio.com](www.rstudio.com).
 
 **Install package**
 
@@ -52,6 +52,21 @@ Installing the package in RStudio is recommended, since RStudio makes it easier 
     idType = 'SYMBOL'
   )
 ```
+
+**Internal Shiny application**   
+To extend the usage of `GCclassifier`, a build-in Shiny application was developed and users could obtain the subtype prediction results simply by uploading their gene expression profiles.    
+
+```
+library(GCclassifier)
+classifyGC_interface()
+```
+
+Supported browers:
+- Chrome (recommended)
+- Firefox
+- Safari
+- Microsoft Edge    
+  
 
 **Design**\
 `GCclassifier` package builds on standard R package workflow and was developed in RStudio following guidelines in R packages [<http://r-pkgs.had.co.nz/>].
