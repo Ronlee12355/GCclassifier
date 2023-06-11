@@ -74,6 +74,49 @@ ui <- navbarPage(
       )
     )
   ),
+  tabPanel(
+    'Tutorial',
+    icon=icon('map-signs'),
+    fluidPage(
+      h1('Online step-by-step tutorial for GCclassifier',style='font-weight:bold;'),
+      br(),
+      hr(),
+
+      h3('Step1: Preparation of the uploaded gene expression data'),
+      p('Upload your gene expression data in csv format, where columns are samples and rows are genes.
+      Gene id column should be specified as `Symbol` in uploaded file.'),
+      p('Expression profile preview in Excel: '),
+      div(tags$img(src=paste0('images', '/data_example.png'), width='33%'), style="text-align: left;"),
+      br(),
+
+      h3('Step 2: Molecular subtype prediction'),
+      p('(1) Upload gene expression profile'),
+      p('(2) Select prediction method'),
+      p('(3) Specify additional parameters for selected prediction method'),
+      p('(4) Select the gene identifier in uploaded gene expression profile'),
+      p('(5) Click Submit for gastric cancer subtype classification'),
+      div(tags$img(src=paste0('images', '/prediction_step.png'), width='33%'), style="text-align: left;"),
+      br(),
+
+      h3('Step3: Download prediction results'),
+      p('The predicted result will appear on the right side of the page,
+      and can be downloaded in various formats (csv, excel, pdf).'),
+      div(tags$img(src=paste0('images', '/result.png'), width='33%'), style="text-align: left;"),
+      br(),
+
+      h3('Cautions', style='color: red;'),
+      HTML(
+        '<div>
+        <ul>
+          <li><p style="font-weight:bold;">No NA values were allowed in the uploaded file.</p></li>
+          <li><p style="font-weight:bold;">Please choose the right gene identifier according to your data.</p></li>
+          <li><p style="font-weight:bold;">Only numeric values in gene expression profile is accepted.</p></li>
+          <li><p style="font-weight:bold;">Gene expression profile cannot contain any negative value(s).</p></li>
+        </ul>
+      </div>'
+      )
+    )
+  ),
 
   tabPanel(
     'Contact',
@@ -185,7 +228,7 @@ server <- function(input, output, session){
         )
       ),footer = NULL,size='l'))
 
-    Sys.sleep(1.5)
+    Sys.sleep(0.5)
     tryCatch({
         res <- GCclassifier::classifyGC(
           Expr = data.inputs$mRNA, method = input$method ,idType = input$idType,
