@@ -86,7 +86,7 @@ ui <- navbarPage(
       p('Upload your gene expression data in csv format, where columns are samples and rows are genes.
       Gene id column should be specified as `Symbol` in uploaded file.'),
       p('Expression profile preview in Excel: '),
-      div(tags$img(src=paste0('images', '/data_example.png'), width='33%'), style="text-align: left;"),
+      div(tags$img(src=paste0('images', '/data_example.png'), width='40%'), style="text-align: left;"),
       br(),
 
       h3('Step 2: Molecular subtype prediction'),
@@ -95,13 +95,13 @@ ui <- navbarPage(
       p('(3) Specify additional parameters for selected prediction method'),
       p('(4) Select the gene identifier in uploaded gene expression profile'),
       p('(5) Click Submit for gastric cancer subtype classification'),
-      div(tags$img(src=paste0('images', '/prediction_step.png'), width='33%'), style="text-align: left;"),
+      div(tags$img(src=paste0('images', '/prediction_step.png'), width='40%'), style="text-align: left;"),
       br(),
 
       h3('Step3: Download prediction results'),
       p('The predicted result will appear on the right side of the page,
       and can be downloaded in various formats (csv, excel, pdf).'),
-      div(tags$img(src=paste0('images', '/result.png'), width='33%'), style="text-align: left;"),
+      div(tags$img(src=paste0('images', '/result.png'), width='40%'), style="text-align: left;"),
       br(),
 
       h3('Cautions', style='color: red;'),
