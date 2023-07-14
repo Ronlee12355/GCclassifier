@@ -12,14 +12,14 @@ ui <- navbarPage(
     'Analyze',
     icon = icon('wrench'),
     fluidPage(
-      h1('Upload gastric cancer gene expression profile to predict molecular subtype',style='font-weight:bold;'),
+      h1('Molecular subtype prediction based on gene expression profiles',style='font-weight:bold;'),
       br(),
       fluidRow(
         column(
           6,
           wellPanel(
             fileInput(
-              'Expr',label = 'Gene expression profile data to upload (30MB maximum): ', buttonLabel = 'File',accept = ".csv"
+              'Expr',label = 'Gene expression profile data to upload (30MB maximum):', buttonLabel = 'File',multiple=FALSE, accept = ".csv"
             ),
             br(),
             uiOutput('mRNA_msg'),
@@ -50,16 +50,13 @@ ui <- navbarPage(
             ),
             br(),
             selectizeInput(
-              'idType', label = 'Input gene id:',
+              'idType', label = 'Input gene ID:',
               choices = c("SYMBOL", "ENSEMBL", "ENTREZID", "REFSEQ"),
               selected = "SYMBOL"
             ),
             br(),
             HTML('Example input dataset could download <a href="GCclassifier_example.csv", target="_blank" download="GCclassifier_example.csv">HERE</a>'),
-            helpText('1. Gene id column should be specified as Symbol in uploaded file.'),
-            helpText('2. No empty values were allowed in the expression profile.'),
-            helpText('3. Gene expression profile cannot contain any negative value(s).'),
-            helpText('4. Please choose the right gene identifier according to your data.'),
+            helpText('Gene IDs column should be specified as \'Gene_ID\' in gene expression profiles'),
             br(),
             br(),
             br(),
@@ -74,33 +71,34 @@ ui <- navbarPage(
       )
     )
   ),
+
   tabPanel(
     'Tutorial',
     icon=icon('map-signs'),
     fluidPage(
-      h1('Online step-by-step tutorial for GCclassifier',style='font-weight:bold;'),
+      h1('A step-by-step guide to use GCclassifier',style='font-weight:bold;'),
       br(),
       hr(),
 
-      h3('Step1: Preparation of the uploaded gene expression data'),
-      p('Upload your gene expression data in csv format, where columns are samples and rows are genes.
-      Gene id column should be specified as `Symbol` in uploaded file.'),
-      p('Expression profile preview in Excel: '),
+      h3('Step 1: Preparation of gene expression profiles'),
+      p('Upload your gene expression data in .csv format, where columns are samples and rows are genes.
+      The name of the column of gene IDs should be specified as \'Gene_ID\' in the file to upload.'),
+      p('A preview of the expression profiles to be uploaded: '),
       div(tags$img(src=paste0('images', '/data_example.png'), width='40%'), style="text-align: left;"),
       br(),
 
       h3('Step 2: Molecular subtype prediction'),
-      p('(1) Upload gene expression profile'),
-      p('(2) Select prediction method'),
-      p('(3) Specify additional parameters for selected prediction method'),
-      p('(4) Select the gene identifier in uploaded gene expression profile'),
-      p('(5) Click Submit for gastric cancer subtype classification'),
+      p('(1) Uploading gene expression profiles'),
+      p('(2) Selecting a method for subtype prediction'),
+      p('(3) Specifying additional parameters (if any) for the selected prediction method'),
+      p('(4) Selecting the type of gene identifiers in the uploaded data'),
+      p('(5) Clicking \'Submit\' for gastric cancer subtype classification'),
       div(tags$img(src=paste0('images', '/prediction_step.png'), width='40%'), style="text-align: left;"),
       br(),
 
-      h3('Step3: Download prediction results'),
-      p('The predicted result will appear on the right side of the page,
-      and can be downloaded in various formats (csv, excel, pdf).'),
+      h3('Step 3: Downloading subtype prediction results'),
+      p('The predicted results will appear on the right side of the webpage,
+      and can be copied or downloaded as a file in .csv, .xlsx or .pdf format.'),
       div(tags$img(src=paste0('images', '/result.png'), width='40%'), style="text-align: left;"),
       br(),
 
@@ -108,10 +106,10 @@ ui <- navbarPage(
       HTML(
         '<div>
         <ul>
-          <li><p style="font-weight:bold;">No NA values were allowed in the uploaded file.</p></li>
-          <li><p style="font-weight:bold;">Please choose the right gene identifier according to your data.</p></li>
-          <li><p style="font-weight:bold;">Only numeric values in gene expression profile is accepted.</p></li>
-          <li><p style="font-weight:bold;">Gene expression profile cannot contain any negative value(s).</p></li>
+          <li><p style="font-weight:bold;">Currently, the expression profiles with \'NA\' values cannot be uploaded and processed by GCclassifier. It is suggested to perform imputation before uploading to the online server.</p></li>
+          <li><p style="font-weight:bold;">Please choose the right type of gene identifiers according to your data. Currently, GCclassifier can accept NCBI Entrez, Ensembl, HGNC symbol and  Refseq.</p></li>
+          <li><p style="font-weight:bold;">Only numeric values in gene expression profiles are accepted.</p></li>
+          <li><p style="font-weight:bold;">Gene expression profiles should not contain any negative value(s).</p></li>
         </ul>
       </div>'
       )
@@ -126,9 +124,13 @@ ui <- navbarPage(
       p('If you have any questions or comments, please feel free to contact us.'),
       hr(),
       tags$div(
-        h3(strong("Xin Wang, Ph.D. Associate Professor")),
+        h3(strong("Xin Wang, PhD")),
+        h3(strong("Associate Professor")),
+        h3(strong("Department of Surgery")),
+        br(),
+        br(),
         p(strong('Email: \n'), p('xwang(a)surgery.cuhk.edu.hk')),
-        p(strong('Address: \n'), p('Prince of Wales Hospital, Shatin, N.T., The Chinese University of Hong Kong, Hong Kong SAR')),
+        p(strong('Address: \n'), p('Room 124031, 10/F, Lui Che Woo Clinical Sciences Building, Prince of Wales Hospital, SHA TIN DISTRICT, NEW TERRITORIES, HONG KONG')),
         p(strong('Phone: \n'), p('(852) 3505 2789')),
         br()
       )
@@ -171,14 +173,14 @@ server <- function(input, output, session){
   observeEvent(input$Expr,{
     req(input$Expr$datapath)
     df <- read.csv(input$Expr$datapath, check.names = F)
-    if(!('Symbol' %in% colnames(df))){
-      message <- 'Column names should include Symbol in the file to identify gene ids.'
+    if(!('Gene_ID' %in% colnames(df))){
+      message <- 'Column names should include Gene_ID in the file to identify gene ids.'
       data.inputs$message <- F
       output$mRNA_msg<-renderUI({
         p(icon('window-close'),message,style='color:red;')
       })
     }else{
-      data.inputs$mRNA<-read.csv(input$Expr$datapath, check.names = F, row.names = 'Symbol')
+      data.inputs$mRNA<-read.csv(input$Expr$datapath, check.names = F, row.names = 'Gene_ID')
       if(any(is.na(data.inputs$mRNA))){
         message <- 'Gene expression profile cannot contain any NA value(s).'
         data.inputs$message <- F
@@ -228,25 +230,27 @@ server <- function(input, output, session){
         )
       ),footer = NULL,size='l'))
 
-    Sys.sleep(0.5)
+    Sys.sleep(1.5)
     tryCatch({
-        res <- GCclassifier::classifyGC(
-          Expr = data.inputs$mRNA, method = input$method ,idType = input$idType,
-          minPosterior = ifelse(is.null(input$minPosterior), 0.5, input$minPosterior),
-          useMinPosterior = ifelse(input$useMinPosterior == 'Yes', T, F),
-          maxp = NULL, verbose = F)
-      },
-      error = function(e){
-        removeModal()
-        showModal(modalDialog(
-          title = p(icon('exclamation'),strong("Error information")),
-          tagList(
-            h3('An error happens, please check your upload file or parameters and refresh the webpage, below is the error info from server', style='color:red;', align='center'),
-            h4(as.character(e), align='center')
-          ), footer = NULL, easyClose = F,size='l'))
-        stop()
-      }
+      res <- GCclassifier::classifyGC(
+        Expr = data.inputs$mRNA, method = input$method ,idType = input$idType,
+        minPosterior = ifelse(is.null(input$minPosterior), 0.5, input$minPosterior),
+        useMinPosterior = ifelse(input$useMinPosterior == 'Yes', T, F),
+        maxp = NULL, verbose = F)
+    },
+    error = function(e){
+      removeModal()
+      showModal(modalDialog(
+        title = p(icon('exclamation'),strong("Error information")),
+        tagList(
+          h3('An error happens, please check your upload file or parameters and refresh the webpage, below is the error info from server', style='color:red;', align='center'),
+          h4(as.character(e), align='center')
+        ), footer = NULL, easyClose = F,size='l'))
+      stop()
+    }
     )
+    res$subtype <- as.character(res$subtype)
+    res[is.na(res)] <- 'Unclassified'
     output$prediction_result<-DT::renderDataTable(server = F, {
       DT::datatable(
         res,
