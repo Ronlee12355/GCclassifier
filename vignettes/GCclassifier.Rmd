@@ -110,7 +110,7 @@ One thing to be noticed, the useMinPosterior parameter indicates whether the min
 
 After predicting the EMP subtypes of GSE62254, the survival outcomes of the predicted labels would be used to check the subtype clinical relevance. To this end, two packages named `survival` and `survminer` should be installed first:
 
-```{r, eval=TRUE}
+```{r, eval=TRUE, message=FALSE}
   if(!requireNamespace('survival')){
     BiocManager::install('survival')
   }
@@ -168,7 +168,7 @@ To predict the ACRG subtypes, except changing the `method` parameter from `EMP` 
   table(acrg.res$subtype, GSE62254_subtype$ACRG.sub)
 ```
 
-```{r, eval=TRUE}
+```{r, eval=TRUE, message=FALSE}
 GSE62254_subtype$ACRG <- acrg.res$subtype
 survfit(Surv(OS.m, Death) ~ ACRG, data = GSE62254_subtype) %>%
   ggsurvplot(
@@ -215,7 +215,7 @@ To predict the TCGA subtypes, set the `method` parameter to `TCGA`, the rest par
   )
 ```
 
-```{r, eval=TRUE}
+```{r, eval=TRUE, message=FALSE}
 GSE62254_subtype$TCGA <- tcga.res$subtype
 survfit(Surv(OS.m, Death) ~ TCGA, data = GSE62254_subtype) %>%
   ggsurvplot(
