@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-Jiang Li^1,2^, Xin Wang^1,2,3^
+Jiang Li^1,2^, Xin Wang^1,3^
 
 ^1^ Department of Surgery, The Chinese University of Hong Kong, Hong Kong SAR, China.\
 ^2^ Department of Biomedical Sciences, City University of Hong Kong, Hong Kong SAR, China.\
@@ -35,23 +35,25 @@ Jiang Li^1,2^, Xin Wang^1,2,3^
 
 # Introduction
 
-The `GCclassifier` package provides molecular subtype prediction of gastric cancer using log2 scaled gene expression profiles. The core classification algorithm is [random forest](https://www.stat.berkeley.edu/~breiman/RandomForests/). Moreover, besides R functions, it also provides local and online Shiny applications which facilitates the non-R users to make gastric cancer molecular subtype prediction. Moreover, the minimal R version required to install the `GCclassifier` package is 4.1.0.
+Gastric cancer (GC) is one of the most commonly diagnosed malignancies, threatening millions of lives worldwide each year. Importantly, GC is a heterogeneous disease, posing a significant challenge to the selection of patients for more optimized therapy. Over the last decades, extensive community effort has been spent on dissecting the heterogeneity of GC, leading to the identification of distinct molecular subtypes that are clinically relevant. However, so far, no tool is publicly available for GC subtype prediction, hindering the research into GC subtype-specific biological mechanisms, the design of novel targeted agents, and potential clinical applications. To address the unmet need, we developed an R package `GCclassifier` for predicting GC molecular subtypes based on gene expression profiles. The predictive performance of `GCclassifier` was demonstrated using case studies on multiple independent datasets.
+
+The `GCclassifier` package enables the molecular subtype prediction of gastric cancer through log2 scaled gene expression profiles, employing the random forest algorithm (https://www.stat.berkeley.edu/~breiman/RandomForests/). Additionally, it offers non-R users the convenience of utilizing local and online Shiny applications for streamlined GC molecular subtype prediction. The package installation requires a minimum R version of 4.1.0.
 
 # Input data
 
-`GCclassifier` provides robust prediction performance on microarray & RNA-seq datasets. Gene IDs in gene expression profiles must be [NCBI Entrez](https://www.ncbi.nlm.nih.gov/gene), [Ensembl](http://www.ensembl.org/index.html), [HGNC symbol](http://www.genenames.org/) or [Refseq](https://www.ncbi.nlm.nih.gov/refseq/), and `colnames` should be set to sample names. More specifically:
+GCclassifier demonstrates robust prediction performance on both microarray and RNA-seq datasets. It is imperative that gene expression profiles employ gene IDs from authoritative sources such as NCBI Entrez, Ensembl, HGNC symbol, or Refseq. Furthermore, the colnames should be appropriately designated as sample names to ensure accurate processing and analysis. More specifically:
 
 -   Microarray data input should be pre-processed and normalized (log2 transformed).\
 -   RNA-sequencing data input should be log2 transformed normalized values (log2 TPM recommended).\
 -   At least two samples were required in the microarray/RNA-seq data.
 
-If the input dataset is not log2 transformed, the function will detect the gene expression profiles range and perform the log2 transformation automatically if needed.
+When the input dataset lacks log2 transformation, the function will automatically detect the range of gene expression profiles and execute the log2 transformation, if necessary.
 
 # Quick start
 
 ## Pre-requisite of installation
 
-Before running the example codes in the vignette, the following R packages are required:
+Prior to executing the example codes in the vignette, the following R packages are necessary:
 
 -   dplyr (dataframe manipulation)
 -   magrittr (pipe operator)
@@ -77,7 +79,7 @@ BiocManager::install(c(
 
 ## Load example dataset GSE62254
 
-In this case study, we would use `GCclassifier` package to perform gastric cancer molecular subtype prediction on gene expression profiles. Specifically, this gene expression profiles (ACRG cohort) are from a microarray dataset of 300 gastric cancer patients named [GSE62254](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE62254) (@Cristescu2015). Using this gene expression profiles, we will predict the molecular subtype of both three subtype systems (`EMP` (@Oh2018), `ACRG`(@Cristescu2015) and `TCGA`(@TCGA2014)).
+In this case study, we employed the `GCclassifier` package to conduct gastric cancer molecular subtype prediction based on gene expression profiles. The gene expression profiles used in this analysis belong to the ACRG cohort, derived from a microarray dataset comprising 300 gastric cancer patients known as [GSE62254](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE62254) (@Cristescu2015). Subsequently, we utilized these gene expression profiles to predict the molecular subtype using three distinct subtype systems, namely `EMP`(@Oh2018), `ACRG`(@Cristescu2015), and `TCGA`(@TCGA2014).
 
 ```{r, eval=TRUE}
   ## Load example data set from GCclassifier and have a glimpse
@@ -90,11 +92,11 @@ In this case study, we would use `GCclassifier` package to perform gastric cance
   identical(colnames(GSE62254), GSE62254_subtype$GEO_ID)
 ```
 
-The gene expression profiles were downloaded using R package `GEOquery`, and the expression levels were mapped from probes to gene symbols, and if multiple probes were mapped to the same gene, the probe with the maximum expression value would be adopted. In GSE62254 dataset, the `rownames(GSE62254)` were gene symbols and the `colnames(GSE62254)` were the sample names.
+The gene expression profiles were acquired using the R package `GEOquery`, and subsequently, the expression levels were mapped from probes to gene symbols. In cases where multiple probes were associated with the same gene, the probe featuring the maximum expression value was selected for further analysis. In the GSE62254 dataset, the `rownames(GSE62254)` represented gene symbols, while the `colnames(GSE62254)` denoted the sample names.
 
 ## Case study 1: The EMP subtype prediction
 
-To predict the EMP subtypes, the gene expression profiles of GSE62254 would be the input data and more information of other parameters would be found in the help page of `classifyGC`:
+To predict the EMP subtypes, the gene expression profiles from GSE62254 serve as the input data, while additional information regarding other parameters can be found in the help page of the `classifyGC` function:
 
 ```{r, eval=TRUE, message=TRUE}
   emp.res <- classifyGC(
@@ -106,9 +108,10 @@ To predict the EMP subtypes, the gene expression profiles of GSE62254 would be t
   
   table(emp.res$subtype, GSE62254_subtype$Subgroup)
 ```
-One thing to be noticed, the useMinPosterior parameter indicates whether the minPosterior threshold should be used to stratify subtypes for EMT subtype. By default, the MP and EP subtype labels would be determined by the pre-trained Youden index value (recommended), users could change the minPosterior and useMinPosterior to optimize their own results. However, minPosterior functions differently when choosing TCGA subtyping system, it is used to classify samples as Unclassified if probabilities of all four subtypes are below this value.
 
-After predicting the EMP subtypes of GSE62254, the survival outcomes of the predicted labels would be used to check the subtype clinical relevance. To this end, two packages named `survival` and `survminer` should be installed first:
+It is important to note that the useMinPosterior parameter plays a crucial role in stratifying subtypes for the EMT subtype. By default, the MP and EP subtype labels are determined using the recommended pre-trained Youden index value. Nonetheless, users have the flexibility to modify the minPosterior and useMinPosterior parameters to optimize their specific results. However, when applying the TCGA subtyping system, minPosterior functions differently, as it is utilized to classify samples as Unclassified only if the probabilities of all four subtypes fall below this specified value.
+
+Subsequent to predicting the EMP subtypes of GSE62254, the survival outcomes of the predicted labels would be employed to assess the clinical relevance of the subtypes. For this purpose, two essential packages, namely `survival` and `survminer`, need to be installed prior to the analysis:
 
 ```{r, eval=TRUE, message=FALSE}
   if(!requireNamespace('survival')){
@@ -157,7 +160,7 @@ After predicting the EMP subtypes of GSE62254, the survival outcomes of the pred
 
 ## Case study 2: The ACRG subtype prediction
 
-To predict the ACRG subtypes, except changing the `method` parameter from `EMP` to `ACRG`, the rest is the same:
+To predict the ACRG subtypes, the procedure remains the same, with the only variation being the alteration of the `method` parameter from EMP to ACRG. The rest of the analysis remains unchanged.
 
 ```{r, eval=TRUE, message=TRUE}
   acrg.res <- classifyGC(
@@ -251,13 +254,14 @@ survfit(Surv(DFS.m, Recur) ~ TCGA, data = GSE62254_subtype) %>%
 ```
 
 # The Shiny application
-To facilitate non-R users and simplify programming burdens, a Shiny application of molecular subtype prediction based on gene expression profiles was provided by running function `classifyGC_interface()` and the Shiny application will automatically appear on the default browser (Chrome, Firefox, Edge and Safari recommended). Example dataset could be found on the `Analyze` page and subtype prediction results could be downloaded directly in various export formats. For more information, please run `??classifyGC_interface` to see the details.  
+In order to streamline the process for non-R users and alleviate programming complexities, a Shiny application for molecular subtype prediction using gene expression profiles has been made available. By executing the `classifyGC_interface()` function, the Shiny application will automatically open on the default browser (Chrome, Firefox, Edge, and Safari recommended). Additionally, an example dataset is accessible on the `Analyze` page, and the generated subtype prediction results can be directly downloaded in various export formats. For further details, please run `??classifyGC_interface` to access comprehensive information.
 
 ```{r, eval=FALSE}
+  # Execute this function to initiate the internal Shiny application
   classifyGC_interface()
 ```
 
-Of note, the errors of running the Shiny application might differ due to the complex conditions of uploaded gene expression profiles, and handling all potential errors is impractical. Please try to follow the rules of example dataset, and users should carefully check the requirements of uploading gene expression profiles:
+It is important to note that the errors encountered while running the Shiny application may vary due to the intricate nature of the uploaded gene expression profiles. Considering the complexity of potential errors, attempting to address all scenarios is impractical. To mitigate issues, users are strongly advised to adhere to the rules specified in the example dataset and exercise caution in ensuring compliance with the requirements for uploading gene expression profiles.:
 
 -   Currently, the expression profiles with 'NA' values cannot be uploaded and processed by GCclassifier. It is suggested to perform imputation before uploading to the application.\
 -   Please choose the right type of gene identifiers according to your data. Currently, GCclassifier can accept NCBI Entrez, Ensembl, HGNC symbol and Refseq.\
@@ -265,7 +269,7 @@ Of note, the errors of running the Shiny application might differ due to the com
 -   Only numeric values in gene expression profiles are accepted.\
 -   Gene expression profiles should not contain any negative value(s).   
 
-If you encounter error information of using Shiny web application, please carefully check your uploaded gene expression profiles, and strictly follow the format of example dataset.   
+In the event of encountering error messages while using the Shiny web application, it is crucial to meticulously review the uploaded gene expression profiles and strictly adhere to the format outlined in the example dataset. Paying close attention to these details will help in resolving any issues effectively.   
 
 # Session Info
 ```{r, echo=FALSE}
