@@ -37,7 +37,7 @@ Jiang Li^1,2^, Xin Wang^1,3^
 
 Gastric cancer (GC) is one of the most commonly diagnosed malignancies, threatening millions of lives worldwide each year. Importantly, GC is a heterogeneous disease, posing a significant challenge to the selection of patients for more optimized therapy. Over the last decades, extensive community effort has been spent on dissecting the heterogeneity of GC, leading to the identification of distinct molecular subtypes that are clinically relevant. However, so far, no tool is publicly available for GC subtype prediction, hindering the research into GC subtype-specific biological mechanisms, the design of novel targeted agents, and potential clinical applications. To address the unmet need, we developed an R package `GCclassifier` for predicting GC molecular subtypes based on gene expression profiles. The predictive performance of `GCclassifier` was demonstrated using case studies on multiple independent datasets.
 
-The `GCclassifier` package enables the molecular subtype prediction of gastric cancer through log2 scaled gene expression profiles, employing the random forest algorithm (https://www.stat.berkeley.edu/~breiman/RandomForests/). Additionally, it offers non-R users the convenience of utilizing local and online Shiny applications for streamlined GC molecular subtype prediction. The package installation requires a minimum R version of 4.1.0.
+The `GCclassifier` package enables the molecular subtype prediction of GC through log2 scaled gene expression profiles, employing the random forest algorithm (https://www.stat.berkeley.edu/~breiman/RandomForests/). Additionally, it offers non-R users the convenience of utilizing local and online Shiny applications for streamlined GC molecular subtype prediction. The package installation requires a minimum R version of 4.1.0.
 
 # Input data
 
@@ -79,7 +79,7 @@ BiocManager::install(c(
 
 ## Load example dataset GSE62254
 
-In this case study, we employed the `GCclassifier` package to conduct gastric cancer molecular subtype prediction based on gene expression profiles. The gene expression profiles used in this analysis belong to the ACRG cohort, derived from a microarray dataset comprising 300 gastric cancer patients known as [GSE62254](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE62254) (@Cristescu2015). Subsequently, we utilized these gene expression profiles to predict the molecular subtype using three distinct subtype systems, namely `EMP`(@Oh2018), `ACRG`(@Cristescu2015), and `TCGA`(@TCGA2014).
+In this case study, we employed the `GCclassifier` package to conduct GC molecular subtype prediction based on gene expression profiles. The gene expression profiles used in this analysis belong to the ACRG cohort, derived from a microarray dataset comprising 300 GC patients known as [GSE62254](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE62254) (@Cristescu2015). Subsequently, we utilized these gene expression profiles to predict the molecular subtype using three distinct subtype systems, namely `EMP`(@Oh2018), `ACRG`(@Cristescu2015), and `TCGA`(@TCGA2014).
 
 ```{r, eval=TRUE}
   ## Load example data set from GCclassifier and have a glimpse
@@ -261,7 +261,7 @@ In order to streamline the process for non-R users and alleviate programming com
   classifyGC_interface()
 ```
 
-It is important to note that the errors encountered while running the Shiny application may vary due to the intricate nature of the uploaded gene expression profiles. Considering the complexity of potential errors, attempting to address all scenarios is impractical. To mitigate issues, users are strongly advised to adhere to the rules specified in the example dataset and exercise caution in ensuring compliance with the requirements for uploading gene expression profiles.:
+It is important to note that the errors encountered while running the Shiny application may vary due to the intricate nature of the uploaded gene expression profiles. Considering the complexity of potential errors, attempting to address all scenarios is impractical. To mitigate issues, users are strongly advised to adhere to the rules specified in the example dataset and exercise caution in ensuring compliance with the requirements for uploading gene expression profiles:
 
 -   Currently, the expression profiles with 'NA' values cannot be uploaded and processed by GCclassifier. It is suggested to perform imputation before uploading to the application.\
 -   Please choose the right type of gene identifiers according to your data. Currently, GCclassifier can accept NCBI Entrez, Ensembl, HGNC symbol and Refseq.\
