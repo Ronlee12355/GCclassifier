@@ -1,14 +1,14 @@
 #' @title Gastric cancer molecular subtypes prediction
 #' @description Predict the molecular subtypes of gastric cancer samples,
-#' based on log2 scaled gene expression profile (GEP).
+#' based on log2 scaled gene expression profiles (GEPs).
 #'
-#' @param Expr a dataframe or matrix with log2 scaled gene expression profile data,
+#' @param Expr a dataframe or matrix with log2 scaled gene expression profiles,
 #' with samples in column and genes in rows, gene names should not be empty.
 #' @param method subtyping classification model, should be either "ACRG", "EMP" or "TCGA". By default is "EMP".
 #' @param idType a string which indicates which type of gene ids used in the rownames of GEP,
 #' should be one of "SYMBOL","ENSEMBL","ENTREZID" and "REFSEQ". By default is "SYMBOL".
 #' @param minPosterior minimal posterior probability to classify a sample in TCGA subtyping system. By default is 0.5.
-#' @param useMinPosterior whether the minPosterior threshold is also used for EMT subtyping. By default is FALSE.
+#' @param useMinPosterior whether the minPosterior threshold is also used for EMT subtyping system. By default is FALSE.
 #' @param maxp the maxp parameter used in \code{\link[impute]{impute.knn}} function,
 #' it is optional.
 #' @param verbose a single logical value specifying to display detailed messages (when verbose=TRUE)
@@ -58,27 +58,27 @@ classifyGC <- function(Expr = NULL,
     stop('Only gene expression profile in dataframe or matrix format is accepted.')
   }
   if (is.null(rownames(Expr)) || is.null(colnames(Expr))) {
-    stop('Rownames and colnames are madatory in gene expression profile.')
+    stop('Rownames and colnames are madatory in gene expression profiles.')
   }
   if (sum(apply(Expr, 2, is.numeric)) != ncol(Expr)) {
     stop('Only numeric values in gene expression profile is accepted.')
   }
   if (any(Expr < 0, na.rm = T)) {
-    stop('Gene expression profile cannot contain any negative value(s).')
+    stop('Gene expression profiles cannot contain any negative value(s).')
   }
   if (any(is.na(Expr))) {
-    stop('Gene expression profile cannot contain any NA value(s).')
+    stop('Gene expression profiles cannot contain any NA value(s).')
   }
   if (sum(c("SYMBOL", "ENSEMBL", "ENTREZID", "REFSEQ") %in% colnames(Expr)) != 0) {
     stop(
-      'Sample names in expression profile should not contain "SYMBOL", "ENSEMBL", "ENTREZID" and "REFSEQ".'
+      'Sample names in expression profiles should not contain "SYMBOL", "ENSEMBL", "ENTREZID" and "REFSEQ".'
     )
   }
   if(ncol(Expr) <= 1){
-    stop('The sample size of expression profile should be larger than one.')
+    stop('The sample size of expression profiles should be larger than one.')
   }
   if (is.matrix(Expr)) {
-    message('Transforming the input gene expression profile into dataframe format.')
+    message('Transforming the input gene expression profiles into dataframe format.')
     Expr <- as.data.frame(Expr)
   }
 
@@ -141,7 +141,7 @@ classifyGC <- function(Expr = NULL,
     gene_in_model <- gc.mp$required.gene %in% rownames(Expr)
     if(sum(gene_in_model) < length(gc.mp$required.gene)*0.5){
       pct <- 1 - (sum(gene_in_model)/length(gc.mp$required.gene))
-      stop(paste0(round(pct, digits = 3)*100, '% required genes were missing, please check your expression profile.'))
+      stop(paste0(round(pct, digits = 3)*100, '% required genes were missing, please check your expression profiles.'))
     }
     if (sum(gene_in_model) < length(gc.mp$required.gene)) {
       gene_not_in_expr <- gc.mp$required.gene[!gene_in_model]
@@ -174,7 +174,7 @@ classifyGC <- function(Expr = NULL,
     gene_in_model <- gc.acrg.emt$required.gene %in% rownames(Expr)
     if(sum(gene_in_model) < length(gc.acrg.emt$required.gene)*0.5){
       pct <- 1 - (sum(gene_in_model)/length(gc.acrg.emt$required.gene))
-      stop(paste0(round(pct, digits = 3)*100, '% required genes were missing, please check your expression profile.'))
+      stop(paste0(round(pct, digits = 3)*100, '% required genes were missing, please check your expression profiles.'))
     }
     if (sum(gene_in_model) < length(gc.acrg.emt$required.gene)) {
       gene_not_in_expr <- gc.acrg.emt$required.gene[!gene_in_model]
@@ -207,7 +207,7 @@ classifyGC <- function(Expr = NULL,
     gene_in_model <- gc.tcga$required.gene %in% rownames(Expr)
     if(sum(gene_in_model) < length(gc.tcga$required.gene)*0.5){
       pct <- 1 - (sum(gene_in_model)/length(gc.tcga$required.gene))
-      stop(paste0(round(pct, digits = 3)*100, '% required genes were missing, please check your expression profile.'))
+      stop(paste0(round(pct, digits = 3)*100, '% required genes were missing, please check your expression profiles.'))
     }
     if (sum(gene_in_model) < length(gc.tcga$required.gene)) {
       gene_not_in_expr <- gc.tcga$required.gene[!gene_in_model]
@@ -244,7 +244,7 @@ classifyGC <- function(Expr = NULL,
   res <- data.frame("sample" = colnames(Expr_impute))
   if (method == "EMP") {
     pred.prob <- predict(gc.mp$MP.EP,
-                         Expr_impute %>% t() %>% scale() %>% as.data.frame(),
+                         Expr_impute[gc.mp$required.gene,] %>% t() %>% scale() %>% as.data.frame(),
                          type = 'prob')
     if(isTRUE(useMinPosterior)){
       res$subtype <- ifelse(pred.prob[, 2] >= minPosterior, 'MP', 'EP')
@@ -274,14 +274,15 @@ classifyGC <- function(Expr = NULL,
       res <- res %>% left_join(tmp[, c('sample', 'TP53')], by = 'sample')
 
       res <- res %>% dplyr::mutate(subtype = dplyr::case_when(
-        is.na(TP53) ~ as.character(MSI.EMT),!is.na(TP53) ~ as.character(TP53)
+        is.na(TP53) ~ as.character(MSI.EMT),
+        !is.na(TP53) ~ as.character(TP53)
       ))
     }else{
       res$subtype <- res$MSI.EMT
     }
     res <- res[, c('sample', 'subtype')]
 
-  } else if(method == 'TCGA'){
+  } else if(method == "TCGA"){
     res$subtype <- predict(
       gc.tcga$TCGA,
       Expr_impute[gc.tcga$required.gene,] %>% t() %>% scale() %>% as.data.frame()
