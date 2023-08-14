@@ -15,7 +15,7 @@ classifyGC(
 )
 }
 \arguments{
-\item{Expr}{a dataframe or matrix with log2 scaled gene expression profile data,
+\item{Expr}{a dataframe or matrix with log2 scaled gene expression profiles,
 with samples in column and genes in rows, gene names should not be empty.}
 
 \item{method}{subtyping classification model, should be either "ACRG", "EMP" or "TCGA". By default is "EMP".}
@@ -25,7 +25,7 @@ should be one of "SYMBOL","ENSEMBL","ENTREZID" and "REFSEQ". By default is "SYMB
 
 \item{minPosterior}{minimal posterior probability to classify a sample in TCGA subtyping system. By default is 0.5.}
 
-\item{useMinPosterior}{whether the minPosterior threshold is also used for EMT subtyping. By default is FALSE.}
+\item{useMinPosterior}{whether the minPosterior threshold is also used for EMT subtyping system. By default is FALSE.}
 
 \item{maxp}{the maxp parameter used in \code{\link[impute]{impute.knn}} function,
 it is optional.}
@@ -40,7 +40,7 @@ subtype column names) will be included.
 }
 \description{
 Predict the molecular subtypes of gastric cancer samples,
-based on log2 scaled gene expression profile (GEP).
+based on log2 scaled gene expression profiles (GEPs).
 }
 \examples{
 data("GSE62254")

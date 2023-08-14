@@ -2,12 +2,12 @@
 % Please edit documentation in R/classifyGC_interface.R
 \name{classifyGC_interface}
 \alias{classifyGC_interface}
-\title{The shiny interface of gastric cancer molecular subtypes prediction}
+\title{The Shiny interface of gastric cancer molecular subtypes prediction}
 \usage{
 classifyGC_interface()
 }
 \description{
-This function runs the shiny app for subtypes prediction of gastric cancer. The maximum upload file size is 30MB.
+This function runs the Shiny app for subtypes prediction of gastric cancer. The maximum upload file size is 30MB.
 }
 \examples{
 classifyGC_interface()
