@@ -21,8 +21,10 @@ Installing the package in RStudio is recommended, since RStudio makes it easier 
   BiocManager::install(c(
     'impute', 'dplyr', 'magrittr', 'AnnotationDbi', 'randomForest', 
     'org.Hs.eg.db', 'shiny', 'DT', 'shinyjs', 'BiocStyle', 'survminer'), force = T)
+  
   ### install: latest version (R version >= 4.1.0 required)
-  devtools::install_github("Ronlee12355/GCclassifier", build_vignettes = TRUE)
+  ### build_vignettes = T, if installing using RStudio
+  devtools::install_github("Ronlee12355/GCclassifier", build_vignettes = T)
   
   ### if not installing from RStudio IDE, no vignette creating is recommended since it requires Pandoc and other dependancies
   devtools::install_github("Ronlee12355/GCclassifier", build_vignettes = F)
@@ -35,9 +37,9 @@ Installing the package in RStudio is recommended, since RStudio makes it easier 
   data("GSE62254")
   
   emp.res <- classifyGC(
-    Expr = GSE62254, ## gene expression profile with log2 transformation
+    Expr = GSE62254, ## gene expression profiles with log2 transformation
     method = 'EMP', ## subtyping system
-    idType = 'SYMBOL' ## the gene identifier type in gene expression profile
+    idType = 'SYMBOL' ## the gene identifier type in gene expression profiles
   )
 
   acrg.res <- classifyGC(
