@@ -1,6 +1,6 @@
 # GCclassifier: an R package for the prediction of molecular subtypes of gastric cancer
 
-<img src="https://github.com/Ronlee12355/GCclassifier/blob/main/GCclassifier.png" height="200" align="right"/>
+<img src="https://github.com/Ronlee12355/GCclassifier/blob/main/GCclassifier.png" height="230" align="right"/>
 
 Gastric cancer (GC) can be divided into gene expression-based and biologically distinct molecular subtypes. This package is to built to predict gastric cancer samples based on their log2 scaled gene expression profiles (GEP). More information about the usage of `GCclassifier` could be found by running `browseVignettes('GCclassifier')`.
 
