@@ -2,27 +2,27 @@
 % Please edit documentation in R/probe_to_symbol.R
 \name{probe_to_symbol}
 \alias{probe_to_symbol}
-\title{Aggregate gene expression profile in probe level to symbol level}
+\title{Aggregate gene expression profile(s) from probeset IDs to gene identifiers for microarray-based datasets}
 \usage{
 probe_to_symbol(Expr, annotation, aggregateMethod = "max")
 }
 \arguments{
-\item{Expr}{a dataframe or matrix with log2 scaled gene expression profile, samples in columns,
-probes in rows, rownames corresponding to the probe in annotation file.}
+\item{Expr}{a dataframe or matrix with log2 scaled gene expression profiles, with samples in columns,
+and probes in rows, rownames corresponding to the "probe" column in annotation file.}
 
-\item{annotation}{probe annotation file, must have "probe" and "symbol" in colnames,
+\item{annotation}{probeset ID annotation file, must have "probe" and "symbol" in colnames,
 "probe" corresponding to rownames in Expr and "sample" corresponding to the
-specified gene identifier.}
+specified gene identifiers.}
 
-\item{aggregateMethod}{the method to calculate expression values if multiple probes
+\item{aggregateMethod}{the method to calculate gene expression values if multiple probes
 map to the same symbol. The default is max.}
 }
 \value{
-a dataframe with log2 scaled gene expression profile in symbol level.
+a dataframe with log2 scaled gene expression profiles in specified gene identifier level.
 }
 \description{
-This function could help to convert the gene expression from probe level to
-symbol (SYMBOL, ENSEMBL, ENTREZID) level.
+This function could help to convert the gene expression profiles from probeset level to
+gene identifier (SYMBOL, ENSEMBL, ENTREZID) level.
 }
 \examples{
 \dontrun{

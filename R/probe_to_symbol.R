@@ -1,18 +1,18 @@
-#' @title Aggregate gene expression profile in probe level to symbol level
-#' @description This function could help to convert the gene expression from probe level to
-#' symbol (SYMBOL, ENSEMBL, ENTREZID) level.
+#' @title Aggregate gene expression profile(s) from probeset IDs to gene identifiers for microarray-based datasets
+#' @description This function could help to convert the gene expression profiles from probeset level to
+#' gene identifier (SYMBOL, ENSEMBL, ENTREZID) level.
 #'
-#' @param Expr a dataframe or matrix with log2 scaled gene expression profile, samples in columns,
-#' probes in rows, rownames corresponding to the probe in annotation file.
-#' @param annotation probe annotation file, must have "probe" and "symbol" in colnames,
+#' @param Expr a dataframe or matrix with log2 scaled gene expression profiles, with samples in columns,
+#' and probes in rows, rownames corresponding to the "probe" column in annotation file.
+#' @param annotation probeset ID annotation file, must have "probe" and "symbol" in colnames,
 #' "probe" corresponding to rownames in Expr and "sample" corresponding to the
-#' specified gene identifier.
-#' @param aggregateMethod the method to calculate expression values if multiple probes
+#' specified gene identifiers.
+#' @param aggregateMethod the method to calculate gene expression values if multiple probes
 #' map to the same symbol. The default is max.
 #'
 #' @importFrom magrittr %>%
 #'
-#' @return a dataframe with log2 scaled gene expression profile in symbol level.
+#' @return a dataframe with log2 scaled gene expression profiles in specified gene identifier level.
 #' @export
 #'
 #' @examples
@@ -29,22 +29,22 @@ probe_to_symbol <-
            aggregateMethod = 'max')
   {
     if (!is.data.frame(Expr) & !is.matrix(Expr)) {
-      stop('Only gene expression profile in dataframe or matrix format is accepted.')
+      stop('Only gene expression profiles in dataframe or matrix format is accepted.')
     }
     if (is.null(rownames(Expr)) | is.null(colnames(Expr))) {
-      stop('Rownames and colnames are madatory in gene expression profile.')
+      stop('Rownames and colnames are madatory in gene expression profiles.')
     }
     if (sum(apply(Expr, 2, is.numeric)) != ncol(Expr)) {
-      stop('Only numeric values in gene expression profile is accepted.')
+      stop('Only numeric values in gene expression profiles is accepted.')
     }
     if (any(Expr < 0, na.rm = T)) {
-      stop('Gene expression profile cannot contain any negative value(s).')
+      stop('Gene expression profiles cannot contain any negative value(s).')
     }
     if (any(is.na(Expr))) {
-      stop('Gene expression profile cannot contain any NA value(s).')
+      stop('Gene expression profiles cannot contain any NA value(s).')
     }
     if (sum(c('probe', 'symbol') %in% colnames(Expr)) != 0) {
-      stop('Colnames in gene expression profile shoud not contain `probe` and `symbol`.')
+      stop('Colnames in gene expression profiles shoud not contain `probe` and `symbol`.')
     }
     Expr <- as.data.frame(Expr)
 
@@ -78,6 +78,6 @@ probe_to_symbol <-
       dplyr::select(-c(probe)) %>% dplyr::group_by(symbol) %>% dplyr::summarise_all(aggregateMethod, na.rm = T) %>%
       as.data.frame()
     rownames(Expr) <- Expr$symbol
-    Expr <- Expr %>% dplyr::select_if(is.numeric) %>% as.data.frame()
+    Expr <- Expr %>% dplyr::select_if(is.numeric) %>% as.data.frame() %>% log2IfNeeded()
     return(Expr)
   }
