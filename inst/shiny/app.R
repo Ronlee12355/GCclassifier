@@ -184,6 +184,14 @@ server <- function(input, output, session){
       output$mRNA_msg<-renderUI({
         p(icon('window-close'),message,style='color:red;')
       })
+    }
+
+    if(sum(duplicated(df$Gene_ID)) > 0 || any(df$Gene_ID == '')){
+      message <- 'duplicate or empty Gene_ID are not allowed.'
+      data.inputs$message <- F
+      output$mRNA_msg<-renderUI({
+        p(icon('window-close'),message,style='color:red;')
+      })
     }else{
       data.inputs$mRNA<-read.csv(input$Expr$datapath, check.names = F, row.names = 'Gene_ID')
       if(any(is.na(data.inputs$mRNA))){
