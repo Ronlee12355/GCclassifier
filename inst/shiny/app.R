@@ -258,8 +258,7 @@ server <- function(input, output, session){
         tagList(
           h3('An error happens, please check your upload file or parameters and refresh the webpage, below is the error info from server', style='color:red;', align='center'),
           h4(as.character(e), align='center')
-        ), footer = NULL, easyClose = F,size='l'))
-      stop()
+        ), footer = NULL, easyClose = F, size='l'))
     }
     )
     res$subtype <- as.character(res$subtype)
