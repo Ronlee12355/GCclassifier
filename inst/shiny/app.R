@@ -175,113 +175,140 @@ server <- function(input, output, session){
     }
   })
 
-  observeEvent(input$Expr,{
+  observeEvent(input$Expr, {
     req(input$Expr$datapath)
     df <- read.csv(input$Expr$datapath, check.names = F)
-    if(!('Gene_ID' %in% colnames(df))){
-      message <- 'Column names should include Gene_ID in the file to identify gene ids.'
+    if (!('Gene_ID' %in% colnames(df))) {
+      message <-
+        'Column names should include Gene_ID in the file to identify gene ids.'
       data.inputs$message <- F
-      output$mRNA_msg<-renderUI({
-        p(icon('window-close'),message,style='color:red;')
+      output$mRNA_msg <- renderUI({
+        p(icon('window-close'), message, style = 'color:red;')
       })
+      return()
     }
 
-    if(sum(duplicated(df$Gene_ID)) > 0 || any(df$Gene_ID == '')){
+    if (sum(duplicated(df$Gene_ID)) > 0 || any(df$Gene_ID == '')) {
       message <- 'duplicate or empty Gene_ID are not allowed.'
       data.inputs$message <- F
-      output$mRNA_msg<-renderUI({
-        p(icon('window-close'),message,style='color:red;')
+      output$mRNA_msg <- renderUI({
+        p(icon('window-close'), message, style = 'color:red;')
       })
-    }else{
-      data.inputs$mRNA<-read.csv(input$Expr$datapath, check.names = F, row.names = 'Gene_ID')
-      if(any(is.na(data.inputs$mRNA))){
-        message <- 'Gene expression profile cannot contain any NA value(s).'
-        data.inputs$message <- F
-        output$mRNA_msg<-renderUI({
-          p(icon('window-close'),message,style='color:red;')
-        })
-      }else if(any(data.inputs$mRNA < 0, na.rm = T)){
-        message <- 'Gene expression profile cannot contain any negative value(s).'
-        data.inputs$message <- F
-        output$mRNA_msg<-renderUI({
-          p(icon('window-close'),message,style='color:red;')
-        })
-      }else if(any(colnames(data.inputs$mRNA) %in% c("SYMBOL","ENSEMBL","ENTREZID", "REFSEQ"))){
-        message <- 'Sample names in expression profile should not contain "SYMBOL", "ENSEMBL", "ENTREZID" and "REFSEQ".'
-        data.inputs$message <- F
-        output$mRNA_msg<-renderUI({
-          p(icon('window-close'),message,style='color:red;')
-        })
-      }else if(ncol(data.inputs$mRNA) <= 1){
-        message <- 'Sample size in expression profile should be larger than one.'
-        data.inputs$message <- F
-        output$mRNA_msg<-renderUI({
-          p(icon('window-close'),message,style='color:red;')
-        })
-      }else{
-        data.inputs$message <- T
-        output$mRNA_msg<-renderUI({
-          p(icon('check-square'),'Data is ready to upload',style='color:green;')
-        })
-      }
-
-      output$mRNA_view<-renderTable({
-        data.inputs$mRNA[1:8,1:5]
-      }, rownames = T)
+      return()
     }
+
+    data.inputs$mRNA <-
+      read.csv(input$Expr$datapath,
+               check.names = F,
+               row.names = 'Gene_ID')
+    if (any(is.na(data.inputs$mRNA))) {
+      message <- 'Gene expression profile cannot contain any NA value(s).'
+      data.inputs$message <- F
+      output$mRNA_msg <- renderUI({
+        p(icon('window-close'), message, style = 'color:red;')
+      })
+    } else if (any(data.inputs$mRNA < 0, na.rm = T)) {
+      message <-
+        'Gene expression profile cannot contain any negative value(s).'
+      data.inputs$message <- F
+      output$mRNA_msg <- renderUI({
+        p(icon('window-close'), message, style = 'color:red;')
+      })
+    } else if (any(colnames(data.inputs$mRNA) %in% c("SYMBOL", "ENSEMBL", "ENTREZID", "REFSEQ"))) {
+      message <-
+        'Sample names in expression profile should not contain "SYMBOL", "ENSEMBL", "ENTREZID" and "REFSEQ".'
+      data.inputs$message <- F
+      output$mRNA_msg <- renderUI({
+        p(icon('window-close'), message, style = 'color:red;')
+      })
+    } else if (ncol(data.inputs$mRNA) <= 1) {
+      message <-
+        'Sample size in expression profile should be larger than one.'
+      data.inputs$message <- F
+      output$mRNA_msg <- renderUI({
+        p(icon('window-close'), message, style = 'color:red;')
+      })
+    } else{
+      data.inputs$message <- T
+      output$mRNA_msg <- renderUI({
+        p(icon('check-square'), 'Data is ready to upload', style = 'color:green;')
+      })
+    }
+
+    output$mRNA_view <- renderTable({
+      data.inputs$mRNA[1:8, 1:5]
+    }, rownames = T)
   })
 
   observeEvent(input$submit, {
-    showModal(modalDialog(
-      tagList(
-        h3(
-          img(src="Loading_icon.gif", heigth='35%', width='35%'),
-          br(),
-          'Gastric cancer molecular subtype prediction is processing......',
-          align = 'center',
-          style = 'color:black;'
-        )
-      ),footer = NULL,size='l'))
+    showModal(modalDialog(tagList(
+      h3(
+        img(
+          src = "Loading_icon.gif",
+          heigth = '35%',
+          width = '35%'
+        ),
+        br(),
+        'Gastric cancer molecular subtype prediction is processing......',
+        align = 'center',
+        style = 'color:black;'
+      )
+    ), footer = NULL, size = 'l'))
 
     Sys.sleep(1.5)
     tryCatch({
       res <- GCclassifier::classifyGC(
-        Expr = data.inputs$mRNA, method = input$method ,idType = input$idType,
+        Expr = data.inputs$mRNA,
+        method = input$method ,
+        idType = input$idType,
         minPosterior = ifelse(is.null(input$minPosterior), 0.5, input$minPosterior),
         useMinPosterior = ifelse(input$useMinPosterior == 'Yes', T, F),
-        maxp = NULL, verbose = F)
+        maxp = NULL,
+        verbose = F
+      )
+      res$subtype <- as.character(res$subtype)
+      res[is.na(res)] <- 'Unclassified'
+      output$prediction_result <- DT::renderDataTable(server = F, {
+        DT::datatable(
+          res,
+          rownames = F,
+          extensions = 'Buttons',
+          width = '100%',
+          options = list(
+            paging = TRUE,
+            searching = TRUE,
+            scrollX = TRUE,
+            fixedColumns = F,
+            autoWidth = F,
+            ordering = TRUE,
+            dom = 'Bfrtip',
+            pageLength = 30,
+            columnDefs = list(list(
+              className = 'dt-center', targets = "_all"
+            )),
+            buttons = c('copy', 'csv', 'excel', 'pdf')
+          )
+        )
+      })
+      removeModal()
     },
-    error = function(e){
+    error = function(e) {
       removeModal()
       showModal(modalDialog(
-        title = p(icon('exclamation'),strong("Error information")),
+        title = p(icon('exclamation'), strong("Error information")),
         tagList(
-          h3('An error happens, please check your upload file or parameters and refresh the webpage, below is the error info from server', style='color:red;', align='center'),
-          h4(as.character(e), align='center')
-        ), footer = NULL, easyClose = F, size='l'))
-    },
-    finally = {
-      res <- NULL
-      return(res)
-    }
-    )
-    res$subtype <- as.character(res$subtype)
-    res[is.na(res)] <- 'Unclassified'
-    output$prediction_result<-DT::renderDataTable(server = F, {
-      DT::datatable(
-        res,
-        rownames=F,
-        extensions = 'Buttons',width = '100%',
-        options = list(
-          paging = TRUE,searching = TRUE,
-          scrollX=TRUE,fixedColumns = F,
-          autoWidth = F,ordering = TRUE,
-          dom = 'Bfrtip', pageLength = 30,
-          columnDefs = list(list(className = 'dt-center', targets = "_all")),
-          buttons = c('copy', 'csv', 'excel', 'pdf')
-        ))
+          h3(
+            'An error happens, please check your upload file or parameters, below is the error info from server',
+            style = 'color:red;',
+            align = 'center'
+          ),
+          h4(as.character(e), align = 'center')
+        ),
+        footer = NULL,
+        easyClose = T,
+        size = 'l'
+      ))
     })
-    removeModal()
   })
 }
 
