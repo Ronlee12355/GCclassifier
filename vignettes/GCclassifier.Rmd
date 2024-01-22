@@ -1,5 +1,5 @@
 ---
-title: "GCclassifier: an R package for the prediction of molecular subtypes of gastric cancer"
+title: "GCclassifier: An R package for the prediction of molecular subtypes of gastric cancer"
 date: "`r Sys.Date()`"
 output: 
   BiocStyle::html_document:
@@ -7,7 +7,7 @@ output:
 bibliography: bibliography.bib
 vignette: >
   %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{GCclassifier: an R package for the prediction of molecular subtypes of gastric cancer}
+  %\VignetteIndexEntry{GCclassifier: An R package for the prediction of molecular subtypes of gastric cancer}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: inline

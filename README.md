@@ -1,4 +1,4 @@
-# GCclassifier: an R package for the prediction of molecular subtypes of gastric cancer
+# GCclassifier: An R package for the prediction of molecular subtypes of gastric cancer
 
 <img src="https://github.com/Ronlee12355/GCclassifier/blob/main/GCclassifier.png" height="230" align="right"/>
 
@@ -70,10 +70,13 @@ Supported browers:
 - Microsoft Edge    
   
 
-**Design**\
+**Design**   
 `GCclassifier` package builds on standard R package workflow and was developed in RStudio following guidelines in R packages [<http://r-pkgs.had.co.nz/>].
 
-**References**\
+**Citation**   
+Jiang Li, Lingli He, Xianrui Zhang, Xiang Li, Lishi Wang, Zhongxu Zhu, Kai Song, Xin Wang. GCclassifier: An R package for the prediction of molecular subtypes of gastric cancer. Comput. Struct. Biotechnol. J. 2024; 23: 752-758. <https://doi.org/10.1016/j.csbj.2024.01.010>
+
+**References**   
 Oh, S.C., Sohn, B.H., Cheong, JH. et al. Clinical and genomic landscape of gastric cancer with a mesenchymal phenotype. Nat Commun 9, 1777 (2018). <https://doi.org/10.1038/s41467-018-04179-8>
 
 Cristescu, R., Lee, J., Nebozhyn, M. et al. Molecular analysis of gastric cancer identifies subtypes associated with distinct clinical outcomes. Nat Med 21, 449--456 (2015). <https://doi.org/10.1038/nm.3850>
