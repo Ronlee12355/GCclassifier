@@ -1,0 +1,10 @@
+bibentry(
+  bibtype  = "Article",
+  title    = "GCclassifier: An R package for the prediction of molecular subtypes of gastric cancer",
+  author   = "Li, J., He, L., Zhang, X., Li, X., Wang, L., Zhu, Z., Song, K., & Wang, X.",
+  journal  = "Computational and Structural Biotechnology Journal",
+  year     = 2024,
+  volume   = 23,
+  pages    = "752-758",
+  doi      = "10.1016/j.csbj.2024.01.010"
+)
